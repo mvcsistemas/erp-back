@@ -1,0 +1,96 @@
+version: '3.8'
+
+networks:
+    erp:
+        name: erp
+
+services:
+    nginx:
+        image: buenomarcelo/nginx-stable-alpine:latest
+        container_name: erp_nginx
+        hostname: erp_nginx
+        restart: unless-stopped
+        depends_on:
+            - php
+            - sqlserver
+        ports:
+            - 80:80
+        volumes:
+            - ./:/var/www/html
+            - ./nginx/log:/var/log/nginx
+            - ./nginx/conf/default.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - erp
+
+    php:
+        build: buenomarcelo/php-fpm-8.2:latest
+        container_name: erp_php
+        hostname: erp_php
+        restart: unless-stopped
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - erp
+
+    artisan:
+        image: buenomarcelo/php-fpm-8.2:latest
+        container_name: erp_artisan
+        hostname: erp_artisan
+        restart: unless-stopped
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - erp
+
+    composer:
+        image: composer:latest
+        container_name: erp_composer
+        hostname: erp_composer
+        volumes:
+            - ./:/var/www/html
+        working_dir: /var/www/html
+        networks:
+            - erp
+
+    npm:
+        image: node:latest
+        container_name: erp_npm
+        hostname: erp_npm
+        volumes:
+        - ./:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ["npm"]
+        networks:
+        - erp
+
+    # mysql:
+    #     image: 'mysql/mysql-server:8.0'
+    #     restart: unless-stopped
+    #     container_name: mysql
+    #     ports:
+    #         - '${DB_PORT}:3306'
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+    #         MYSQL_ROOT_HOST: "%"
+    #         MYSQL_DATABASE: '${DB_DATABASE}'
+    #         MYSQL_USER: '${DB_USERNAME}'
+    #         MYSQL_PASSWORD: '${DB_PASSWORD}'
+    #         MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    #     volumes:
+    #         - ./mysql:/var/lib/mysql
+    #     networks:
+    #         - erp
+
+    # phpmyadmin:
+    #     image: phpmyadmin/phpmyadmin
+    #     restart: always
+    #     container_name: phpmyadmin
+    #     depends_on:
+    #         - mysql
+    #     ports:
+    #         - "8081:80"
+    #     environment:
+    #         PMA_HOST: mysql
+    #         MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+    #     networks:
+    #         - erp
