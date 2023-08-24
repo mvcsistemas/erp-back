@@ -5,8 +5,8 @@ namespace MVC\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserRequest extends FormRequest
-{
+class UserRequest extends FormRequest {
+
     public function rules()
     {
         return [

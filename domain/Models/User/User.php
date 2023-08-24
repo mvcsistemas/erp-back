@@ -15,19 +15,16 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\ResetPasswordNotification;
-use MVC\Models\CadPodologo\CadPodologo;
-use MVC\Models\CadFuncionario\CadFuncionario;
 
-class User extends MVCModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
-{
+class User extends MVCModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {
 
     use Authenticatable, Authorizable, HasApiTokens, HasFactory, HasUuid, CanResetPassword, Notifiable;
 
-    protected $table = 'users';
+    protected $table      = 'users';
     protected $primaryKey = 'id';
-    protected $guarded = [''];
-    protected $hidden = ['password', 'remember_token'];
-    protected $casts = ['email_verified_at' => 'datetime'];
+    protected $guarded    = [''];
+    protected $hidden     = ['password', 'remember_token'];
+    protected $casts      = ['email_verified_at' => 'datetime'];
 
     public $timestamps = true;
 
@@ -38,11 +35,6 @@ class User extends MVCModel implements AuthenticatableContract, AuthorizableCont
         self::creating(function ($model) {
             $model->password = $model->password ? Hash::make($model->password) : '';
         });
-    }
-
-    public function tipoCadastro()
-    {
-        return $this->morphTo();
     }
 
     public function filter($query, array $params = [])
@@ -58,18 +50,8 @@ class User extends MVCModel implements AuthenticatableContract, AuthorizableCont
 
     public function sendPasswordResetNotification($token)
     {
-        $url =  env('FRONT_URL') . '/reset-password/' . $token . '?email=' . $this->email;
+        $url = env('FRONT_URL') . '/reset-password/' . $token . '?email=' . $this->email;
 
         $this->notify(new ResetPasswordNotification($url));
-    }
-
-    public function podologo ()
-    {
-        return $this->belongsTo(CadPodologo::class, 'id', 'id_podologo');
-    }
-
-    public function funcionario ()
-    {
-        return $this->belongsTo(CadFuncionario::class, 'id', 'id_funcionario');
     }
 }

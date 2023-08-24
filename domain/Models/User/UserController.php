@@ -17,7 +17,7 @@ class UserController extends MVCController {
 
     public function index()
     {
-//        $this->authorize('view', auth()->user());
+        //        $this->authorize('view', auth()->user());
 
         $rows = $this->service->index();
 
@@ -26,7 +26,7 @@ class UserController extends MVCController {
 
     public function show($uuid)
     {
-//        $this->authorize('view', auth()->user());
+        //        $this->authorize('view', auth()->user());
 
         $row = $this->service->showByUuid($uuid);
 
@@ -36,7 +36,7 @@ class UserController extends MVCController {
     public function store(UserRequest $request)
     {
 
-//        $this->authorize('create', auth()->user());
+        //        $this->authorize('create', auth()->user());
 
         $row = $this->service->create($request->all());
 
@@ -45,7 +45,7 @@ class UserController extends MVCController {
 
     public function update($uuid, UserRequest $request)
     {
-//        $this->authorize('update', auth()->user());
+        //        $this->authorize('update', auth()->user());
 
         $this->service->updateByUuid($uuid, $request->all());
 
@@ -54,7 +54,7 @@ class UserController extends MVCController {
 
     public function destroy($uuid)
     {
-//        $this->authorize('delete', auth()->user());
+        //        $this->authorize('delete', auth()->user());
 
         $this->service->deleteByUuid($uuid);
 

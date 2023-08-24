@@ -23,7 +23,7 @@ services:
             - erp
 
     php:
-        build: buenomarcelo/php-fpm-8.2:latest
+        image: buenomarcelo/php-fpm-8.2:latest
         container_name: erp_php
         hostname: erp_php
         restart: unless-stopped
@@ -63,34 +63,34 @@ services:
         networks:
         - erp
 
-    # mysql:
-    #     image: 'mysql/mysql-server:8.0'
-    #     restart: unless-stopped
-    #     container_name: mysql
-    #     ports:
-    #         - '${DB_PORT}:3306'
-    #     environment:
-    #         MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-    #         MYSQL_ROOT_HOST: "%"
-    #         MYSQL_DATABASE: '${DB_DATABASE}'
-    #         MYSQL_USER: '${DB_USERNAME}'
-    #         MYSQL_PASSWORD: '${DB_PASSWORD}'
-    #         MYSQL_ALLOW_EMPTY_PASSWORD: 1
-    #     volumes:
-    #         - ./mysql:/var/lib/mysql
-    #     networks:
-    #         - erp
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        restart: unless-stopped
+        container_name: mysql
+        ports:
+            - '${DB_PORT}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - ./mysql:/var/lib/mysql
+        networks:
+            - erp
 
-    # phpmyadmin:
-    #     image: phpmyadmin/phpmyadmin
-    #     restart: always
-    #     container_name: phpmyadmin
-    #     depends_on:
-    #         - mysql
-    #     ports:
-    #         - "8081:80"
-    #     environment:
-    #         PMA_HOST: mysql
-    #         MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-    #     networks:
-    #         - erp
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        container_name: phpmyadmin
+        depends_on:
+            - mysql
+        ports:
+            - "8081:80"
+        environment:
+            PMA_HOST: mysql
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+        networks:
+            - erp
