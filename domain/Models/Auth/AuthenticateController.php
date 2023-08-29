@@ -4,33 +4,32 @@ namespace MVC\Models\Auth;
 
 use MVC\Base\MVCController;
 use MVC\Models\User\User;
-use MVC\Models\CadPodologo\CadPodologo;
-use MVC\Models\CadFuncionario\CadFuncionario;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthenticateController extends MVCController
 {
-    public function login(AuthenticateRequest $request)
+    public function login(AuthenticateRequest $request): Response
     {
-        $credentials   = $request->only(['email', 'password']);
-        $remember      = $request->remember;
-        $user          = User::where('email', $credentials['email'])->first();
-        $tipo_cadastro = $user->tipoCadastro instanceof CadFuncionario ? 'F' : 'P';
-        $nome          = $tipo_cadastro == 'F' ? $user->tipoCadastro->nome_funcionario : $user->tipoCadastro->nome_podologo;
+        $credentials           = $request->only(['email', 'password']);
+        $credentials['active'] = 1;
+        $remember              = $request->remember;
+        $user                  = User::where('email', $credentials['email'])->first();
 
-        if ($user->tipoCadastro->ativo && $user->tipoCadastro->acesso_sistema && Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
+        dd($credentials);
+        if ($user && $user->ativo && Auth::attempt($credentials, $remember)) {
+            // $request->session()->regenerate();
 
-            return  ['name' => $nome, 'tipo_cadastro' => $tipo_cadastro];
+            return  auth()->user();
         }
 
-        throw ValidationException::withMessages(['email' => ['Email e/ou senha inválido(s).']]);
+        throw ValidationException::withMessages(['email' => 'Email e/ou senha inválido(s).']);
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): Response
     {
         Auth::logout();
 
@@ -41,22 +40,20 @@ class AuthenticateController extends MVCController
         return response()->json(['message' => 'Desconectado com sucesso.']);
     }
 
-    public function loginApi(AuthenticateRequest $request)
+    public function loginApi(AuthenticateRequest $request): Response
     {
         $credentials = $request->only(['email', 'password']);
 
         $user = User::where('email', $credentials['email'])->first();
 
-        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Email e/ou senha inválido(s).'],
-            ]);
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            return $user->createToken('token-api')->plainTextToken;
         }
 
-        return $user->createToken('token-api')->plainTextToken;
+        throw ValidationException::withMessages(['email' => 'Email e/ou senha inválido(s).']);
     }
 
-    public function logoutApi()
+    public function logoutApi(): Response
     {
         auth()->user()->tokens()->delete();
 

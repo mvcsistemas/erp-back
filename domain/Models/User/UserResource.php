@@ -13,7 +13,7 @@ class UserResource extends JsonResource {
             'uuid'              => $this->uuid,
             'email'             => $this->email,
             'email_verified_at' => $this->email_verified_at,
-            'tipo_cadastro'     => $this->tipo_cadastro,
+            'active'            => $this->active,
             'remember_token'    => $this->remember_token,
             'created_at'        => $this->created_at,
             'updated_at'        => $this->updated_at,
