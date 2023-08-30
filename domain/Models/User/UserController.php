@@ -6,8 +6,8 @@ use MVC\Base\MVCController;
 
 class UserController extends MVCController {
 
-    protected UserService   $service;
-    protected               $resource;
+    protected UserService $service;
+    protected             $resource;
 
     public function __construct(UserService $service)
     {
