@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dre', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_dre');
+            $table->uuid();
+            $table->date('data_dre');
+            $table->boolean('fechamento_dre');
             $table->timestamps();
+            $table->index(['id_dre', 'uuid', 'data_dre']);
         });
     }
 

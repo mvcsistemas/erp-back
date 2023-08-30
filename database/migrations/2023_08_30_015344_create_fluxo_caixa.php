@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fluxo_caixa', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_fluxo_caixa');
+            $table->uuid();
+            $table->date('data_fluxo_caixa');
+            $table->decimal('valor_liquido_fluxo_caixa', 13, 2);
+            $table->boolean('fechamento_fluxo_caixa');
+            $table->decimal('saldo_anterior_fluxo_caixa', 13, 2);
+            $table->decimal('saldo_dia_fluxo_caixa', 13, 2);
             $table->timestamps();
+            $table->index(['id_fluxo_caixa', 'uuid', 'data_fluxo_caixa']);
         });
     }
 

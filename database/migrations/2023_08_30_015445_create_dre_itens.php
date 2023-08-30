@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dre_itens', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_dre_item');
+            $table->uuid();
+            $table->decimal('aliquota', 13, 2);
+            $table->decimal('valor_dre_item', 13, 2);
+            $table->string('dsc_dre_item', 255);
+            $table->foreignId('fk_id_grupo_dre')->references('id_dre_grupo')->on('dre_grupo');
+            $table->foreignId('fk_id_dre')->references('id_dre')->on('dre')->onDelete('cascade');
             $table->timestamps();
+            $table->index(['id_dre_item', 'uuid']);
         });
     }
 

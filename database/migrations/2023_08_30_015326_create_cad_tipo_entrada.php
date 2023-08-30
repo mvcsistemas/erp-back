@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('cad_tipo_entrada', function (Blueprint $table) {
             $table->id('id_tipo_entrada');
             $table->uuid();
-            $table->string('dsc_tipo_entrada');
+            $table->string('dsc_tipo_entrada', 255);
             $table->foreignId('fk_id_grupo_financeiro')->references('id_grupo_financeiro')->on('cad_grupo_financeiro')->onDelete('cascade');
             $table->timestamps();
+            $table->index(['id_tipo_entrada', 'uuid']);
         });
     }
 

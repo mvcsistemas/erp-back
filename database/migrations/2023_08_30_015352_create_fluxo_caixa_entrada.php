@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fluxo_caixa_entrada', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_fluxo_caixa_entrada');
+            $table->uuid();
+            $table->date('data_fluxo_caixa_entrada');
+            $table->decimal('valor_fluxo_caixa_entrada', 13, 2);
+            $table->foreignId('fk_id_tipo_nota_entrada')->references('id_tipo_nota_entrada')->on('cad_tipo_nota_entrada');
+            $table->foreignId('fk_id_fluxo_caixa')->references('id_fluxo_caixa')->on('fluxo_caixa')->onDelete('cascade');
             $table->timestamps();
+            $table->index(['id_fluxo_caixa_entrada', 'uuid', 'data_fluxo_caixa_entrada']);
         });
     }
 

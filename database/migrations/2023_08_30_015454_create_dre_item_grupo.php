@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dre_item_grupo', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_dre_item_grupo');
+            $table->uuid();
+            $table->decimal('valor_dre_item_grupo', 13, 2);
+            $table->foreignId('fk_id_grupo_dre')->references('id_dre_grupo')->on('dre_grupo');
+            $table->foreignId('fk_id_dre')->references('id_dre')->on('dre')->onDelete('cascade');
             $table->timestamps();
+            $table->index(['id_dre_item_grupo', 'uuid']);
         });
     }
 

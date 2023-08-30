@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dre_grupo', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_dre_grupo');
+            $table->uuid();
+            $table->string('dsc_gre_grupo', 255);
             $table->timestamps();
+            $table->index(['id_dre_grupo', 'uuid']);
         });
     }
 
