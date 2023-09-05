@@ -5,8 +5,8 @@ namespace MVC\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Carbon\Carbon;
 
-class DateFimRule implements Rule
-{
+class DateFimRule implements Rule {
+
     public function passes($attribute, $value)
     {
         $data_inicio = Carbon::createFromFormat('d/m/Y', request()->data_inicio);

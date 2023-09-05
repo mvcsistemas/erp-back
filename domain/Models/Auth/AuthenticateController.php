@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Validation\ValidationException;
 
 class AuthenticateController extends MVCController
@@ -19,14 +20,13 @@ class AuthenticateController extends MVCController
         $remember              = $request->remember;
         $user                  = User::where('email', $credentials['email'])->first();
 
-        dd($credentials);
         if ($user && $user->ativo && Auth::attempt($credentials, $remember)) {
             // $request->session()->regenerate();
 
             return  auth()->user();
         }
 
-        throw ValidationException::withMessages(['email' => 'Email e/ou senha inválido(s).']);
+        throw ValidationException::withMessages(['email' => Lang::get('login_senha_invalidos')]);
     }
 
     public function logout(Request $request): Response
@@ -37,7 +37,7 @@ class AuthenticateController extends MVCController
 
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Desconectado com sucesso.']);
+        return response()->json(['message' => Lang::get('desconectado_sucesso')]);
     }
 
     public function loginApi(AuthenticateRequest $request): Response
@@ -50,13 +50,13 @@ class AuthenticateController extends MVCController
             return $user->createToken('token-api')->plainTextToken;
         }
 
-        throw ValidationException::withMessages(['email' => 'Email e/ou senha inválido(s).']);
+        throw ValidationException::withMessages(['email' => Lang::get('login_senha_invalidos')]);
     }
 
     public function logoutApi(): Response
     {
         auth()->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Desconectado com sucesso.']);
+        return response()->json(['message' => Lang::get('desconectado_sucesso')]);
     }
 }

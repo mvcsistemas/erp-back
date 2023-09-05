@@ -7,8 +7,8 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Lang;
 use MVC\Models\User\User;
 
-class RolePermissionPolicy
-{
+class RolePermissionPolicy {
+
     use HandlesAuthorization;
 
     const model = 'MVC\Models\CadPodologo\CadPodologo';

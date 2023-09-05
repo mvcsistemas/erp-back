@@ -11,7 +11,7 @@ class FirstAccess extends MVCModel {
 
     protected $table      = 'first_access';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_uuid', 'otp', 'expire_at'];
+    protected $fillable   = ['user_uuid', 'otp', 'expire_at'];
 
     public function filter($query, array $params = [])
     {

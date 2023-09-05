@@ -17,7 +17,7 @@ class MVCService {
             return $this->model->lists(array_merge(request()->all(), $params));
         }
 
-        return  [];
+        return [];
     }
 
     public function showById(int $id): MVCModel
@@ -67,7 +67,7 @@ class MVCService {
     public function filter(Builder $query, array $params): Builder
     {
         if (method_exists($this->model, 'filter')) {
-            $query    = $this->model->filter($query, $params);
+            $query = $this->model->filter($query, $params);
         }
 
         return $query;

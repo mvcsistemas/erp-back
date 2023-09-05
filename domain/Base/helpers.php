@@ -9,7 +9,6 @@ function setData($value)
     return \DateTime::createFromFormat('d/m/Y', trim($value))->format('Y-m-d');
 }
 
-
 function convertTime($value, $format = 'H:i')
 {
     if (trim($value) == '') {

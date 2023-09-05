@@ -5,6 +5,7 @@ namespace MVC\Models\FirstAccess;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Notifications\SendOtpFirtAccess;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Validation\ValidationException;
@@ -13,43 +14,44 @@ use MVC\Models\User\User;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 
-class FirstAccessController extends MVCController
-{
-    public function generate(Request $request)
+class FirstAccessController extends MVCController {
+
+    public function generate(Request $request): Response
     {
         $request->validate([
             'email' => 'required|email',
         ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ( ! $user) {
+            throw ValidationException::withMessages([
+                'email' => Lang::get('User')
+            ]);
+        } else if ( ! $user->ativo) {
+            throw ValidationException::withMessages([
+                'email' => [Lang::get('inactive_user')]
+            ]);
+        } else if ($user && $user->password) {
+            throw ValidationException::withMessages([
+                'email' => Lang::get('user_has_password')
+            ]);
+        }
 
         $verificationCode = $this->generateOtp($request->email);
 
         return $verificationCode;
     }
 
-    public function generateOtp($email)
+    public function generateOtp(User $user): mixed
     {
-        $user = User::where('email', $email)->first();
-
-        if(!$user){
-            throw ValidationException::withMessages([
-                'email' => Lang::get('User')
-                ]);
-        }else if(!$user->tipoCadastro->ativo || !$user->tipoCadastro->acesso_sistema){
-            throw ValidationException::withMessages([
-                'email' => [Lang::get('usuario_inativo_ou_sem_acesso')]
-            ]);
-        } else if($user && $user->password){
-            throw ValidationException::withMessages([
-                'email' => Lang::get('usuario_ja_cadastrado')
-                ]);
-        }
 
         $verificationCode = FirstAccess::where('user_uuid', $user->uuid)->latest('expire_at')->first();
 
         $now = Carbon::now();
 
-        if($verificationCode){
-            if($now->isBefore($verificationCode->expire_at)){
+        if ($verificationCode) {
+            if ($now->isBefore($verificationCode->expire_at)) {
                 $user->notify(new SendOtpFirtAccess($user, $verificationCode));
 
                 return $verificationCode;
@@ -69,27 +71,27 @@ class FirstAccessController extends MVCController
         return $newCode;
     }
 
-    public function checkCodeForNewPassword(Request $request)
+    public function checkCodeForNewPassword(Request $request): Response
     {
         $request->validate([
             'user_uuid' => 'required|exists:users,uuid',
-            'otp' => 'required'
+            'otp'       => 'required'
         ]);
 
         $verificationCode = $this->validateCode($request);
 
         $user = User::whereUuid($request->user_uuid)->first();
 
-        if($user){
+        if ($user) {
             return response()->json($verificationCode);
         }
 
         throw ValidationException::withMessages([
-            Lang::get('codigo_invalido')
+            Lang::get('invalid_code')
         ]);
     }
 
-    public function createPassword(Request $request)
+    public function createPassword(Request $request): Response
     {
         $request->validate([
             'user_uuid' => 'required',
@@ -101,7 +103,7 @@ class FirstAccessController extends MVCController
 
         $user = User::whereUuid($request->user_uuid)->first();
 
-        if($user){
+        if ($user) {
             $user->forceFill([
                 'password' => Hash::make($request->password)
             ])->setRememberToken(Str::random(60));
@@ -112,27 +114,27 @@ class FirstAccessController extends MVCController
                 'expire_at' => Carbon::now()
             ]);
 
-            return response()->json([Lang::get('senha_criada_sucesso')]);
+            return response()->json([Lang::get('successfully_created_password')]);
         }
 
         throw ValidationException::withMessages([
-            Lang::get('codigo_invalido')
+            Lang::get('invalid_code')
         ]);
     }
 
-
-    public function validateCode(Request $request){
+    public function validateCode(Request $request): Response
+    {
         $verificationCode = FirstAccess::where('user_uuid', $request->user_uuid)->where('otp', $request->otp)->first();
 
         $now = Carbon::now();
 
-        if (!$verificationCode) {
+        if ( ! $verificationCode) {
             throw ValidationException::withMessages([
-                Lang::get('codigo_invalido')
+                Lang::get('invalid_code')
             ]);
-        }elseif($verificationCode && $now->isAfter($verificationCode->expire_at)){
+        } elseif ($verificationCode && $now->isAfter($verificationCode->expire_at)) {
             throw ValidationException::withMessages([
-                Lang::get('codigo_expirado')
+                Lang::get('expired_code')
             ]);
         }
 
