@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cad_grupo_financeiro', function (Blueprint $table) {
-            $table->id('id_grupo_financeiro');
-            $table->uuid();
+            $table->id('id_grupo_financeiro')->index();
+            $table->uuid()->index();
             $table->string('dsc_grupo_financeiro', 255);
             $table->timestamps();
-            $table->index(['id_grupo_financeiro', 'uuid']);
         });
     }
 

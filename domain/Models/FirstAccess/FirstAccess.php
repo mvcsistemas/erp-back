@@ -2,6 +2,7 @@
 
 namespace MVC\Models\FirstAccess;
 
+use Illuminate\Database\Eloquent\Builder;
 use MVC\Base\MVCModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -13,7 +14,7 @@ class FirstAccess extends MVCModel {
     protected $primaryKey = 'id';
     protected $fillable   = ['user_uuid', 'otp', 'expire_at'];
 
-    public function filter($query, array $params = [])
+    public function filter($query, array $params = []): Builder
     {
         $user_uuid = (int)($params['user_uuid'] ?? '');
 

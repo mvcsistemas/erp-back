@@ -16,7 +16,7 @@ use MVC\Models\User\User;
 
 class NewPasswordController extends Controller {
 
-    public function forgotPassword(Request $request)
+    public function forgotPassword(Request $request): mixed
     {
         $request->validate([
             'email' => 'required|email',
@@ -24,9 +24,13 @@ class NewPasswordController extends Controller {
 
         $user = User::where('email', $request->email)->first();
 
-        if ( ! $user->tipoCadastro->ativo || ! $user->tipoCadastro->acesso_sistema) {
+        if ( ! $user->active ) {
             throw ValidationException::withMessages([
-                'email' => [Lang::get('usuario_inativo_ou_sem_acesso')]
+                'email' => [Lang::get('usuario_invalido')]
+            ]);
+        } else if ($user && ! $user->password) {
+            throw ValidationException::withMessages([
+                'email' => Lang::get('nao_foi_possivel_prosseguir')
             ]);
         }
 
@@ -45,7 +49,7 @@ class NewPasswordController extends Controller {
         ]);
     }
 
-    public function resetPassword(Request $request)
+    public function resetPassword(Request $request): mixed
     {
         $request->validate([
             'token'    => 'required',
@@ -75,7 +79,7 @@ class NewPasswordController extends Controller {
 
         if ($status == Password::PASSWORD_RESET) {
             return response([
-                'message' => Lang::get('senha_alterada_com_sucesso')
+                'message' => Lang::get('senha_alterada_sucesso')
             ]);
         }
 

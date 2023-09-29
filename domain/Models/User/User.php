@@ -15,6 +15,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\ResetPasswordNotification;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends MVCModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {
 
@@ -25,8 +26,7 @@ class User extends MVCModel implements AuthenticatableContract, AuthorizableCont
     protected $guarded    = [''];
     protected $hidden     = ['password', 'remember_token'];
     protected $casts      = ['email_verified_at' => 'datetime'];
-
-    public $timestamps = true;
+    public    $timestamps = true;
 
     public static function boot()
     {
@@ -37,7 +37,7 @@ class User extends MVCModel implements AuthenticatableContract, AuthorizableCont
         });
     }
 
-    public function filter($query, array $params = [])
+    public function filter($query, array $params = []): Builder
     {
         $email = (string)($params['email'] ?? '');
 
@@ -50,7 +50,7 @@ class User extends MVCModel implements AuthenticatableContract, AuthorizableCont
 
     public function sendPasswordResetNotification($token)
     {
-        $url = env('FRONT_URL') . '/reset-password/' . $token . '?email=' . $this->email;
+        $url = config('erp.front_url') . '/reset-password/' . $token . '?email=' . $this->email;
 
         $this->notify(new ResetPasswordNotification($url));
     }

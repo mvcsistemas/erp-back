@@ -5,23 +5,23 @@ namespace MVC\Models\Auth;
 use MVC\Base\MVCController;
 use MVC\Models\User\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\JsonResponse;
 
 class AuthenticateController extends MVCController
 {
-    public function login(AuthenticateRequest $request): Response
+    public function login(AuthenticateRequest $request): mixed
     {
         $credentials           = $request->only(['email', 'password']);
         $credentials['active'] = 1;
         $remember              = $request->remember;
         $user                  = User::where('email', $credentials['email'])->first();
 
-        if ($user && $user->ativo && Auth::attempt($credentials, $remember)) {
-            // $request->session()->regenerate();
+        if ($user && Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
 
             return  auth()->user();
         }
@@ -29,7 +29,7 @@ class AuthenticateController extends MVCController
         throw ValidationException::withMessages(['email' => Lang::get('login_senha_invalidos')]);
     }
 
-    public function logout(Request $request): Response
+    public function logout(Request $request): JsonResponse
     {
         Auth::logout();
 
@@ -40,20 +40,19 @@ class AuthenticateController extends MVCController
         return response()->json(['message' => Lang::get('desconectado_sucesso')]);
     }
 
-    public function loginApi(AuthenticateRequest $request): Response
+    public function loginApi(AuthenticateRequest $request): mixed
     {
         $credentials = $request->only(['email', 'password']);
+        $user        = User::where('email', $credentials['email'])->first();
 
-        $user = User::where('email', $credentials['email'])->first();
-
-        if ($user && Hash::check($credentials['password'], $user->password)) {
+        if ($user && $user->active && Hash::check($credentials['password'], $user->password)) {
             return $user->createToken('token-api')->plainTextToken;
         }
 
         throw ValidationException::withMessages(['email' => Lang::get('login_senha_invalidos')]);
     }
 
-    public function logoutApi(): Response
+    public function logoutApi(): JsonResponse
     {
         auth()->user()->tokens()->delete();
 

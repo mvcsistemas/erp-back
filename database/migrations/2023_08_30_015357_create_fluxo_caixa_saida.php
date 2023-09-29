@@ -12,14 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fluxo_caixa_saida', function (Blueprint $table) {
-            $table->id('id_fluxo_caixa_saida');
-            $table->uuid();
-            $table->date('data_fluxo_caixa_saida');
+            $table->id('id_fluxo_caixa_saida')->index();
+            $table->uuid()->index();
+            $table->date('data_fluxo_caixa_saida')->index();
             $table->decimal('valor_fluxo_caixa_saida', 13, 2);
-            $table->foreignId('fk_id_tipo_nota_saida')->references('id_tipo_nota_saida')->on('cad_tipo_nota_saida');
+            $table->foreignId('fk_id_tipo_saida')->references('id_tipo_saida')->on('cad_tipo_saida');
             $table->foreignId('fk_id_fluxo_caixa')->references('id_fluxo_caixa')->on('fluxo_caixa')->onDelete('cascade');
             $table->timestamps();
-            $table->index(['id_fluxo_caixa_saida', 'uuid', 'data_fluxo_caixa_entrada']);
         });
     }
 

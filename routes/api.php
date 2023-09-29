@@ -20,7 +20,7 @@ Route::group([
 ], function () {
     // Login WEB
     Route::post('login', 'AuthenticateController@login');
-    Route::post('logout', 'AuthenticateController@logout');
+    Route::post('logout', 'AuthenticateController@logout')->middleware('auth:sanctum');
 
     //Login API
     Route::post('login-api', 'AuthenticateController@loginApi');
@@ -43,7 +43,7 @@ Route::group([
 ], function () {
     Route::post('generate-otp', 'FirstAccessController@generate')->name('generate-otp');
     Route::post('check-otp', 'FirstAccessController@checkCodeForNewPassword')->name('check-otp');
-    Route::post('reate-password', 'FirstAccessController@createPassword')->name('create-password');
+    Route::post('create-password', 'FirstAccessController@createPassword')->name('create-password');
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

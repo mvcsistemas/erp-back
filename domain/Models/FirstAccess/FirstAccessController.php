@@ -5,7 +5,6 @@ namespace MVC\Models\FirstAccess;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Notifications\SendOtpFirtAccess;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Validation\ValidationException;
@@ -16,7 +15,7 @@ use Illuminate\Validation\Rules\Password as RulesPassword;
 
 class FirstAccessController extends MVCController {
 
-    public function generate(Request $request): Response
+    public function generate(Request $request): mixed
     {
         $request->validate([
             'email' => 'required|email',
@@ -24,21 +23,17 @@ class FirstAccessController extends MVCController {
 
         $user = User::where('email', $request->email)->first();
 
-        if ( ! $user) {
+        if ( ! $user || ! $user->active) {
             throw ValidationException::withMessages([
-                'email' => Lang::get('User')
-            ]);
-        } else if ( ! $user->ativo) {
-            throw ValidationException::withMessages([
-                'email' => [Lang::get('inactive_user')]
+                'email' => Lang::get('usuario_invalido')
             ]);
         } else if ($user && $user->password) {
             throw ValidationException::withMessages([
-                'email' => Lang::get('user_has_password')
+                'email' => Lang::get('usuario_possui_senha')
             ]);
         }
 
-        $verificationCode = $this->generateOtp($request->email);
+        $verificationCode = $this->generateOtp($user);
 
         return $verificationCode;
     }
@@ -71,7 +66,7 @@ class FirstAccessController extends MVCController {
         return $newCode;
     }
 
-    public function checkCodeForNewPassword(Request $request): Response
+    public function checkCodeForNewPassword(Request $request): mixed
     {
         $request->validate([
             'user_uuid' => 'required|exists:users,uuid',
@@ -87,11 +82,11 @@ class FirstAccessController extends MVCController {
         }
 
         throw ValidationException::withMessages([
-            Lang::get('invalid_code')
+            Lang::get('codigo_invalido')
         ]);
     }
 
-    public function createPassword(Request $request): Response
+    public function createPassword(Request $request): mixed
     {
         $request->validate([
             'user_uuid' => 'required',
@@ -114,15 +109,15 @@ class FirstAccessController extends MVCController {
                 'expire_at' => Carbon::now()
             ]);
 
-            return response()->json([Lang::get('successfully_created_password')]);
+            return response()->json([Lang::get('senha_criada_sucesso')]);
         }
 
         throw ValidationException::withMessages([
-            Lang::get('invalid_code')
+            Lang::get('nao_foi_possivel_redefinir_senha')
         ]);
     }
 
-    public function validateCode(Request $request): Response
+    public function validateCode(Request $request): mixed
     {
         $verificationCode = FirstAccess::where('user_uuid', $request->user_uuid)->where('otp', $request->otp)->first();
 
@@ -130,11 +125,11 @@ class FirstAccessController extends MVCController {
 
         if ( ! $verificationCode) {
             throw ValidationException::withMessages([
-                Lang::get('invalid_code')
+                Lang::get('codigo_invalido')
             ]);
         } elseif ($verificationCode && $now->isAfter($verificationCode->expire_at)) {
             throw ValidationException::withMessages([
-                Lang::get('expired_code')
+                Lang::get('codigo_expirado')
             ]);
         }
 
