@@ -23,9 +23,8 @@ class User extends MVCModel implements AuthenticatableContract, AuthorizableCont
 
     protected $table      = 'users';
     protected $primaryKey = 'id';
-    protected $guarded    = [''];
-    protected $hidden     = ['password', 'remember_token'];
-    protected $casts      = ['email_verified_at' => 'datetime'];
+    protected $guarded    = ['id'];
+    protected $hidden     = ['id', 'active', 'password', 'remember_token', 'created_at', 'updated_at', 'email_verified_at'];
     public    $timestamps = true;
 
     public static function boot()

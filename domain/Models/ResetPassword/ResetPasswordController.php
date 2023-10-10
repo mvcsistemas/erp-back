@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 use MVC\Models\User\User;
 
-class NewPasswordController extends Controller {
+class ResetPasswordController extends Controller {
 
     public function forgotPassword(Request $request): mixed
     {
@@ -24,7 +24,7 @@ class NewPasswordController extends Controller {
 
         $user = User::where('email', $request->email)->first();
 
-        if ( ! $user->active ) {
+        if ( ! $user || ! $user->active ) {
             throw ValidationException::withMessages([
                 'email' => [Lang::get('usuario_invalido')]
             ]);
@@ -54,23 +54,19 @@ class NewPasswordController extends Controller {
         $request->validate([
             'token'    => 'required',
             'email'    => 'required|email',
-            'password' => ['required', 'confirmed', RulesPassword::defaults()],
+            'password' => ['required', RulesPassword::defaults(), 'confirmed'],
         ]);
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
 
-            function ($user) use ($request) {
+            function (User $user, string $password) {
                 $user->forceFill([
-                    'password' => Hash::make($request->password)
+                    'password' => Hash::make($password)
                 ])->setRememberToken(Str::random(60));
 
                 $user->save();
 
-                // Desloga de todos os outros dispositivos
-                Auth::logoutOtherDevices($request->password);
-
-                // Apaga todos os tokes de api vinculado ao usuario
                 $user->tokens()->delete();
 
                 event(new PasswordReset($user));

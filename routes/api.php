@@ -32,8 +32,8 @@ Route::group([
     'namespace' => 'ResetPassword'
 ], function () {
     //Reset Password
-    Route::post('forgot-password', 'NewPasswordController@forgotPassword')->name('forgot');
-    Route::post('reset-password', 'NewPasswordController@resetPassword')->name('reset');
+    Route::post('forgot-password', 'ResetPasswordController@forgotPassword')->name('forgot');
+    Route::post('reset-password', 'ResetPasswordController@resetPassword')->name('reset');
 });
 
 Route::group([

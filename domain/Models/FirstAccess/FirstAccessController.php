@@ -40,7 +40,6 @@ class FirstAccessController extends MVCController {
 
     public function generateOtp(User $user): mixed
     {
-
         $verificationCode = FirstAccess::where('user_uuid', $user->uuid)->latest('expire_at')->first();
 
         $now = Carbon::now();
@@ -82,7 +81,7 @@ class FirstAccessController extends MVCController {
         }
 
         throw ValidationException::withMessages([
-            Lang::get('codigo_invalido')
+            'error_message' => Lang::get('codigo_invalido')
         ]);
     }
 
@@ -113,7 +112,7 @@ class FirstAccessController extends MVCController {
         }
 
         throw ValidationException::withMessages([
-            Lang::get('nao_foi_possivel_redefinir_senha')
+            'error_message' => Lang::get('nao_foi_possivel_redefinir_senha')
         ]);
     }
 
@@ -125,11 +124,11 @@ class FirstAccessController extends MVCController {
 
         if ( ! $verificationCode) {
             throw ValidationException::withMessages([
-                Lang::get('codigo_invalido')
+                'error_message' => Lang::get('codigo_invalido')
             ]);
-        } elseif ($verificationCode && $now->isAfter($verificationCode->expire_at)) {
+        } else if ($verificationCode && $now->isAfter($verificationCode->expire_at)) {
             throw ValidationException::withMessages([
-                Lang::get('codigo_expirado')
+                'error_message' => Lang::get('codigo_expirado')
             ]);
         }
 

@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'front_url' => 'http://localhost:9000'
+    'front_url' => 'http://localhost:8080'
 ];
