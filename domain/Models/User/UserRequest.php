@@ -12,7 +12,8 @@ class UserRequest extends FormRequest {
         return [
             'id'                => '',
             'uuid'              => '',
-            'email'             => ['required', Rule::unique('users')->ignore(request()->id)],
+            'name'              => 'required',
+            'email'             => ['required', 'unique:users,email'],
             'password'          => '',
             'active'            => 'required',
             'remember_token'    => '',
@@ -25,9 +26,9 @@ class UserRequest extends FormRequest {
     public function messages()
     {
         return [
-            'email.required'    => 'O campo E-mail é obrigatório.',
-            'password.required' => 'O campo Senha é obrigatório.',
-            'active.required'   => 'O campo Ativo é obrigatório.'
+            'name.required'   => 'O campo Nome é obrigatório.',
+            'email.required'  => 'O campo E-mail é obrigatório.',
+            'active.required' => 'O campo Ativo é obrigatório.'
         ];
     }
 }

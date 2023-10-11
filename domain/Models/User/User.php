@@ -24,7 +24,6 @@ class User extends MVCModel implements AuthenticatableContract, AuthorizableCont
     protected $table      = 'users';
     protected $primaryKey = 'id';
     protected $guarded    = ['id'];
-    protected $hidden     = ['id', 'active', 'password', 'remember_token', 'created_at', 'updated_at', 'email_verified_at'];
     public    $timestamps = true;
 
     public static function boot()
@@ -36,15 +35,26 @@ class User extends MVCModel implements AuthenticatableContract, AuthorizableCont
         });
     }
 
-    public function filter($query, array $params = []): Builder
+    public function filter(Builder $query, array $params = []): Builder
     {
-        $email = (string)($params['email'] ?? '');
+        $uuid            = (string)($params['uuid'] ?? '');
+        $email           = (string)($params['email'] ?? '');
+        $tipo_ordenacao  = (string)($params['tipo_ordenacao'] ?? '');
+        $campo_ordenacao = (string)($params['campo_ordenacao'] ?? '');
 
-        if ($email) {
-            $query->where('email', 'LIKE', "%$email%");
-        }
-
-        return $query;
+        return $query
+            ->when($uuid, function ($query) use ($uuid) {
+                $query->where('users.uuid', $uuid);
+            })
+            ->when($email, function ($query) use ($email) {
+                $query->where('users.email', 'like', "%$email%");
+            })
+            ->when($tipo_ordenacao && $campo_ordenacao, function ($query) use ($tipo_ordenacao, $campo_ordenacao) {
+                $query->orderBy($campo_ordenacao, $tipo_ordenacao);
+            })
+            ->when(! $tipo_ordenacao || ! $campo_ordenacao, function ($query) {
+                $query->orderBy('users.name');
+            });
     }
 
     public function sendPasswordResetNotification($token)

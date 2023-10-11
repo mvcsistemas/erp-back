@@ -20,7 +20,7 @@ Route::group([
 ], function () {
     // Login WEB
     Route::post('login', 'AuthenticateController@login');
-    Route::post('logout', 'AuthenticateController@logout')->middleware('auth:sanctum');
+    Route::post('logout', 'AuthenticateController@logout');
 
     //Login API
     Route::post('login-api', 'AuthenticateController@loginApi');
@@ -48,4 +48,17 @@ Route::group([
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group([
+    'as'         => 'portal.',
+    'middleware' => 'auth:sanctum'
+], function () {
+    Route::group([
+        'prefix'    => 'user',
+        'as'        => 'user.',
+        'namespace' => 'User'
+    ], function () {
+        Route::apiResource('', 'UserController')->parameters(['' => 'uuid']);
+    });
 });
