@@ -13,7 +13,9 @@ class UserRequest extends FormRequest {
             'id'                => '',
             'uuid'              => '',
             'name'              => 'required',
-            'email'             => ['required', 'unique:users,email'],
+            'email'             => ['required', Rule::unique('users')->where(function ($query) {
+                return $query->where('uuid', '<>', request()->uuid);
+            })],
             'password'          => '',
             'active'            => 'required',
             'remember_token'    => '',

@@ -1,26 +1,26 @@
 <?php
 
-namespace MVC\Models\User;
+namespace MVC\Models\CadGrupoFinanceiro;
 
 use Illuminate\Http\JsonResponse;
 use MVC\Base\MVCController;
 
-class UserController extends MVCController {
+class CadGrupoFinanceiroController extends MVCController {
 
-    protected UserService $service;
-    protected             $resource;
+    protected CadGrupoFinanceiroService $service;
+    protected                       $resource;
 
-    public function __construct(UserService $service)
+    public function __construct(CadGrupoFinanceiroService $service)
     {
         $this->service  = $service;
-        $this->resource = UserResource::class;
+        $this->resource = CadGrupoFinanceiroResource::class;
     }
 
     public function index(): JsonResponse
     {
         $rows = $this->service->index();
 
-        return $this->responseBuilder($rows);
+        return $this->responseBuilderWithoutPagination($rows);
     }
 
     public function show($uuid): JsonResponse
@@ -30,16 +30,16 @@ class UserController extends MVCController {
         return $this->responseBuilderRow($row);
     }
 
-    public function store(UserRequest $request): JsonResponse
+    public function store(CadGrupoFinanceiroRequest $request): JsonResponse
     {
-        $row = $this->service->create($request->all());
+        $row = $this->service->create($request->validate());
 
         return $this->responseBuilderRow($row, true, 201);
     }
 
-    public function update($uuid, UserRequest $request)
+    public function update($uuid, CadGrupoFinanceiroRequest $request): JsonResponse
     {
-        $this->service->updateByUuid($uuid, $request->all());
+        $this->service->updateByUuid($uuid, $request->validate());
 
         return $this->responseBuilderRow([], false, 204);
     }
