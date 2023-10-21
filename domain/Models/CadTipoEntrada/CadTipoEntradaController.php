@@ -20,7 +20,7 @@ class CadTipoEntradaController extends MVCController {
     {
         $rows = $this->service->index();
 
-        return $this->responseBuilderWithoutPagination($rows);
+        return $this->responseBuilder($rows);
     }
 
     public function show($uuid): JsonResponse
@@ -32,14 +32,14 @@ class CadTipoEntradaController extends MVCController {
 
     public function store(CadTipoEntradaRequest $request): JsonResponse
     {
-        $row = $this->service->create($request->validate());
+        $row = $this->service->create($request->validated());
 
         return $this->responseBuilderRow($row, true, 201);
     }
 
     public function update($uuid, CadTipoEntradaRequest $request): JsonResponse
     {
-        $this->service->updateByUuid($uuid, $request->validate());
+        $this->service->updateByUuid($uuid, $request->validated());
 
         return $this->responseBuilderRow([], false, 204);
     }

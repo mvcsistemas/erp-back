@@ -17,13 +17,17 @@ class CadTipoEntrada extends MVCModel {
 
     public function filter(Builder $query, array $params = []): Builder
     {
-        $uuid            = (string)($params['uuid'] ?? '');
-        $tipo_ordenacao  = (string)($params['tipo_ordenacao'] ?? '');
-        $campo_ordenacao = (string)($params['campo_ordenacao'] ?? '');
+        $uuid             = (string)($params['uuid'] ?? '');
+        $dsc_tipo_entrada = (string)($params['dsc_tipo_entrada'] ?? '');
+        $tipo_ordenacao   = (string)($params['tipo_ordenacao'] ?? '');
+        $campo_ordenacao  = (string)($params['campo_ordenacao'] ?? '');
 
         return $query
             ->when($uuid, function ($query) use ($uuid) {
                 $query->where('cad_tipo_entrada.uuid', $uuid);
+            })
+            ->when($dsc_tipo_entrada, function ($query) use ($dsc_tipo_entrada) {
+                $query->where('cad_tipo_entrada.dsc_tipo_entrada', 'like', "%$dsc_tipo_entrada%");
             })
             ->when($tipo_ordenacao && $campo_ordenacao, function ($query) use ($tipo_ordenacao, $campo_ordenacao) {
                 $query->orderBy($campo_ordenacao, $tipo_ordenacao);

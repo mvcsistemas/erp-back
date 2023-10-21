@@ -23,7 +23,7 @@ class AuthenticateController extends MVCController
         if ($user && Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            return  auth()->user();
+            return response()->json(['data' => auth()->user()]);
         }
 
         throw ValidationException::withMessages(['email' => Lang::get('login_senha_invalidos')]);

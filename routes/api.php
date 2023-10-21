@@ -61,4 +61,12 @@ Route::group([
     ], function () {
         Route::apiResource('', 'UserController')->parameters(['' => 'uuid']);
     });
+
+    Route::group([
+        'prefix'    => 'tipo-entrada',
+        'as'        => 'tipo-entrada.',
+        'namespace' => 'CadTipoEntrada'
+    ], function () {
+        Route::apiResource('', 'CadTipoEntradaController')->parameters(['' => 'uuid']);
+    });
 });

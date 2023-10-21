@@ -32,14 +32,14 @@ class DreItensController extends MVCController {
 
     public function store(DreItensRequest $request): JsonResponse
     {
-        $row = $this->service->create($request->validate());
+        $row = $this->service->create($request->validated());
 
         return $this->responseBuilderRow($row, true, 201);
     }
 
     public function update($uuid, DreItensRequest $request): JsonResponse
     {
-        $this->service->updateByUuid($uuid, $request->validate());
+        $this->service->updateByUuid($uuid, $request->validated());
 
         return $this->responseBuilderRow([], false, 204);
     }

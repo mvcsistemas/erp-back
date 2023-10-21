@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('id_tipo_entrada')->index();
             $table->uuid()->index();
             $table->string('dsc_tipo_entrada', 255);
-            $table->foreignId('fk_id_grupo_financeiro')->references('id_grupo_financeiro')->on('cad_grupo_financeiro')->onDelete('cascade');
             $table->timestamps();
         });
     }
