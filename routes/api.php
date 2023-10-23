@@ -69,4 +69,20 @@ Route::group([
     ], function () {
         Route::apiResource('', 'CadTipoEntradaController')->parameters(['' => 'uuid']);
     });
+
+    Route::group([
+        'prefix'    => 'tipo-saida',
+        'as'        => 'tipo-saida.',
+        'namespace' => 'CadTipoSaida'
+    ], function () {
+        Route::apiResource('', 'CadTipoSaidaController')->parameters(['' => 'uuid']);
+    });
+
+    Route::group([
+        'prefix'    => 'grupo-financeiro',
+        'as'        => 'grupo-financeiro.',
+        'namespace' => 'CadGrupoFinanceiro'
+    ], function () {
+        Route::apiResource('', 'CadGrupoFinanceiroController')->parameters(['' => 'uuid']);
+    });
 });

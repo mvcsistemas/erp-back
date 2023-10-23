@@ -18,12 +18,16 @@ class CadTipoSaida extends MVCModel {
     public function filter(Builder $query, array $params = []): Builder
     {
         $uuid            = (string)($params['uuid'] ?? '');
+        $dsc_tipo_saida  = (string)($params['dsc_tipo_saida'] ?? '');
         $tipo_ordenacao  = (string)($params['tipo_ordenacao'] ?? '');
         $campo_ordenacao = (string)($params['campo_ordenacao'] ?? '');
 
         return $query
             ->when($uuid, function ($query) use ($uuid) {
                 $query->where('cad_tipo_saida.uuid', $uuid);
+            })
+            ->when($dsc_tipo_saida, function ($query) use ($dsc_tipo_saida) {
+                $query->where('cad_tipo_entrada.dsc_tipo_saida', 'like', "%$dsc_tipo_saida%");
             })
             ->when($tipo_ordenacao && $campo_ordenacao, function ($query) use ($tipo_ordenacao, $campo_ordenacao) {
                 $query->orderBy($campo_ordenacao, $tipo_ordenacao);

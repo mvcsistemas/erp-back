@@ -17,13 +17,17 @@ class CadGrupoFinanceiro extends MVCModel {
 
     public function filter(Builder $query, array $params = []): Builder
     {
-        $uuid            = (string)($params['uuid'] ?? '');
-        $tipo_ordenacao  = (string)($params['tipo_ordenacao'] ?? '');
-        $campo_ordenacao = (string)($params['campo_ordenacao'] ?? '');
+        $uuid                 = (string)($params['uuid'] ?? '');
+        $dsc_grupo_financeiro = (string)($params['dsc_grupo_financeiro'] ?? '');
+        $tipo_ordenacao       = (string)($params['tipo_ordenacao'] ?? '');
+        $campo_ordenacao      = (string)($params['campo_ordenacao'] ?? '');
 
         return $query
             ->when($uuid, function ($query) use ($uuid) {
                 $query->where('cad_grupo_financeiro.uuid', $uuid);
+            })
+            ->when($dsc_grupo_financeiro, function ($query) use ($dsc_grupo_financeiro) {
+                $query->where('cad_tipo_entrada.dsc_grupo_financeiro', 'like', "%$dsc_grupo_financeiro%");
             })
             ->when($tipo_ordenacao && $campo_ordenacao, function ($query) use ($tipo_ordenacao, $campo_ordenacao) {
                 $query->orderBy($campo_ordenacao, $tipo_ordenacao);

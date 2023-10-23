@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('data_fluxo_caixa_saida')->index();
             $table->decimal('valor_fluxo_caixa_saida', 13, 2);
             $table->foreignId('fk_id_tipo_saida')->references('id_tipo_saida')->on('cad_tipo_saida');
+            $table->foreignId('fk_id_grupo_financeiro')->references('id_grupo_financeiro')->on('cad_grupo_financeiro');
             $table->foreignId('fk_id_fluxo_caixa')->references('id_fluxo_caixa')->on('fluxo_caixa')->onDelete('cascade');
             $table->timestamps();
         });
