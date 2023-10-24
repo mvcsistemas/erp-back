@@ -1,16 +1,16 @@
 <?php
 
-namespace MVC\Models\DreGrupo;
+namespace MVC\Models\CadGrupoDre;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DreGrupoResource extends JsonResource {
+class CadGrupoDreResource extends JsonResource {
 
     public function toArray($request)
     {
         $retorno = [
             'uuid'          => $this->uuid,
-            'dsc_gre_grupo' => $this->dsc_gre_grupo
+            'dsc_grupo_dre' => $this->dsc_grupo_dre
         ];
 
         return $retorno;

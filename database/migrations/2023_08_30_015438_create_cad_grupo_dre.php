@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dre_grupo', function (Blueprint $table) {
-            $table->id('id_dre_grupo')->index();
+        Schema::create('cad_grupo_dre', function (Blueprint $table) {
+            $table->id('id_grupo_dre')->index();
             $table->uuid()->index();
-            $table->string('dsc_gre_grupo', 255);
+            $table->string('dsc_grupo_dre', 255);
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dre_grupo');
+        Schema::dropIfExists('cad_grupo_dre');
     }
 };

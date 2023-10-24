@@ -85,4 +85,12 @@ Route::group([
     ], function () {
         Route::apiResource('', 'CadGrupoFinanceiroController')->parameters(['' => 'uuid']);
     });
+
+    Route::group([
+        'prefix'    => 'grupo-dre',
+        'as'        => 'grupo-dre.',
+        'namespace' => 'CadGrupoDre'
+    ], function () {
+        Route::apiResource('', 'CadGrupoDreController')->parameters(['' => 'uuid']);
+    });
 });

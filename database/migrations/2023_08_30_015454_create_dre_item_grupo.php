@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_dre_item_grupo')->index();
             $table->uuid()->index();
             $table->decimal('valor_dre_item_grupo', 13, 2);
-            $table->foreignId('fk_id_grupo_dre')->references('id_dre_grupo')->on('dre_grupo');
+            $table->foreignId('fk_id_grupo_dre')->references('id_grupo_dre')->on('cad_grupo_dre');
             $table->foreignId('fk_id_dre')->references('id_dre')->on('dre')->onDelete('cascade');
             $table->timestamps();
         });

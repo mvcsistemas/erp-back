@@ -3,12 +3,13 @@
 namespace MVC\Models\CadTipoSaida;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MVC\Base\MVCModel;
 use YourAppRocks\EloquentUuid\Traits\HasUuid;
 
 class CadTipoSaida extends MVCModel {
 
-    use HasUuid;
+    use HasUuid, HasFactory;
 
     protected $table      = 'cad_tipo_saida';
     protected $primaryKey = 'id_tipo_saida';
@@ -27,7 +28,7 @@ class CadTipoSaida extends MVCModel {
                 $query->where('cad_tipo_saida.uuid', $uuid);
             })
             ->when($dsc_tipo_saida, function ($query) use ($dsc_tipo_saida) {
-                $query->where('cad_tipo_entrada.dsc_tipo_saida', 'like', "%$dsc_tipo_saida%");
+                $query->where('cad_tipo_saida.dsc_tipo_saida', 'like', "%$dsc_tipo_saida%");
             })
             ->when($tipo_ordenacao && $campo_ordenacao, function ($query) use ($tipo_ordenacao, $campo_ordenacao) {
                 $query->orderBy($campo_ordenacao, $tipo_ordenacao);

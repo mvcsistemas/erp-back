@@ -3,12 +3,13 @@
 namespace MVC\Models\CadTipoEntrada;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MVC\Base\MVCModel;
 use YourAppRocks\EloquentUuid\Traits\HasUuid;
 
 class CadTipoEntrada extends MVCModel {
 
-    use HasUuid;
+    use HasUuid, HasFactory;
 
     protected $table      = 'cad_tipo_entrada';
     protected $primaryKey = 'id_tipo_entrada';

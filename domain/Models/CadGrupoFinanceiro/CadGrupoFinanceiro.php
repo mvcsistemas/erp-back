@@ -3,12 +3,13 @@
 namespace MVC\Models\CadGrupoFinanceiro;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MVC\Base\MVCModel;
 use YourAppRocks\EloquentUuid\Traits\HasUuid;
 
 class CadGrupoFinanceiro extends MVCModel {
 
-    use HasUuid;
+    use HasUuid, HasFactory;
 
     protected $table      = 'cad_grupo_financeiro';
     protected $primaryKey = 'id_grupo_financeiro';
@@ -27,7 +28,7 @@ class CadGrupoFinanceiro extends MVCModel {
                 $query->where('cad_grupo_financeiro.uuid', $uuid);
             })
             ->when($dsc_grupo_financeiro, function ($query) use ($dsc_grupo_financeiro) {
-                $query->where('cad_tipo_entrada.dsc_grupo_financeiro', 'like', "%$dsc_grupo_financeiro%");
+                $query->where('cad_grupo_financeiro.dsc_grupo_financeiro', 'like', "%$dsc_grupo_financeiro%");
             })
             ->when($tipo_ordenacao && $campo_ordenacao, function ($query) use ($tipo_ordenacao, $campo_ordenacao) {
                 $query->orderBy($campo_ordenacao, $tipo_ordenacao);
