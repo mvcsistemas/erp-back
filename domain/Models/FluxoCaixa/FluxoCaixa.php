@@ -29,7 +29,7 @@ class FluxoCaixa extends MVCModel {
                 $query->orderBy($campo_ordenacao, $tipo_ordenacao);
             })
             ->when(! $tipo_ordenacao || ! $campo_ordenacao, function ($query) {
-                $query->orderBy('fluxo_caixa.data_fluxo_caixa');
+                $query->orderByDesc('fluxo_caixa.data_fluxo_caixa');
             });
     }
 }

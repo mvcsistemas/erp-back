@@ -54,6 +54,7 @@ Route::group([
     'as'         => 'portal.',
     'middleware' => 'auth:sanctum'
 ], function () {
+
     Route::group([
         'prefix'    => 'user',
         'as'        => 'user.',
@@ -92,5 +93,29 @@ Route::group([
         'namespace' => 'CadGrupoDre'
     ], function () {
         Route::apiResource('', 'CadGrupoDreController')->parameters(['' => 'uuid']);
+    });
+
+    Route::group([
+        'prefix'    => 'fluxo-caixa',
+        'as'        => 'fluxo-caixa.',
+        'namespace' => 'FluxoCaixa'
+    ], function () {
+        Route::apiResource('', 'FluxoCaixaController')->parameters(['' => 'uuid']);
+    });
+
+    Route::group([
+        'prefix'    => 'fluxo-caixa-entrada',
+        'as'        => 'fluxo-caixa-entrada.',
+        'namespace' => 'FluxoCaixaEntrada'
+    ], function () {
+        Route::apiResource('', 'FluxoCaixaEntradaController')->parameters(['' => 'uuid']);
+    });
+
+    Route::group([
+        'prefix'    => 'fluxo-caixa-saida',
+        'as'        => 'fluxo-caixa-saida.',
+        'namespace' => 'FluxoCaixaSaida'
+    ], function () {
+        Route::apiResource('', 'FluxoCaixaSaidaController')->parameters(['' => 'uuid']);
     });
 });
