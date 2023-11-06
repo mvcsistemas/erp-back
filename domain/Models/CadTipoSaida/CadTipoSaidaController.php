@@ -8,7 +8,7 @@ use MVC\Base\MVCController;
 class CadTipoSaidaController extends MVCController {
 
     protected CadTipoSaidaService $service;
-    protected                       $resource;
+    protected                     $resource;
 
     public function __construct(CadTipoSaidaService $service)
     {
