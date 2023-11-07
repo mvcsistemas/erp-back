@@ -68,6 +68,7 @@ Route::group([
         'as'        => 'tipo-entrada.',
         'namespace' => 'CadTipoEntrada'
     ], function () {
+        Route::get('lookup', 'CadTipoEntradaController@lookup')->name('lookup');
         Route::apiResource('', 'CadTipoEntradaController')->parameters(['' => 'uuid']);
     });
 
@@ -84,6 +85,7 @@ Route::group([
         'as'        => 'grupo-financeiro.',
         'namespace' => 'CadGrupoFinanceiro'
     ], function () {
+        Route::get('lookup', 'CadGrupoFinanceiroController@lookup')->name('lookup');
         Route::apiResource('', 'CadGrupoFinanceiroController')->parameters(['' => 'uuid']);
     });
 

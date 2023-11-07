@@ -3,6 +3,7 @@
 namespace MVC\Models\CadGrupoFinanceiro;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MVC\Base\MVCModel;
 use YourAppRocks\EloquentUuid\Traits\HasUuid;
@@ -15,6 +16,14 @@ class CadGrupoFinanceiro extends MVCModel {
     protected $primaryKey = 'id_grupo_financeiro';
     protected $guarded    = ['id_grupo_financeiro'];
     public    $timestamps = true;
+
+    public function lookup(array $data): Collection
+    {
+        $rows = $this->select('uuid as value', 'dsc_grupo_financeiro as label');
+        $rows = $this->filter($rows, $data);
+
+        return $rows->get();
+    }
 
     public function filter(Builder $query, array $params = []): Builder
     {

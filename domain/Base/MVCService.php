@@ -3,6 +3,7 @@
 namespace MVC\Base;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class MVCService {
 
@@ -55,7 +56,7 @@ class MVCService {
         return $this->model->deleteRecordById($id);
     }
 
-    public function lookup(array $params): MVCModel
+    public function lookup(array $params): Collection
     {
         if (method_exists($this->model, 'lookup')) {
             return $this->model->lookup($params);
