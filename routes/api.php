@@ -77,6 +77,7 @@ Route::group([
         'as'        => 'tipo-saida.',
         'namespace' => 'CadTipoSaida'
     ], function () {
+        Route::get('lookup', 'CadTipoSaidaController@lookup')->name('lookup');
         Route::apiResource('', 'CadTipoSaidaController')->parameters(['' => 'uuid']);
     });
 

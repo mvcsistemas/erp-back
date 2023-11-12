@@ -20,7 +20,7 @@ class DreItensController extends MVCController {
     {
         $rows = $this->service->index();
 
-        return $this->responseBuilderWithoutPagination($rows);
+        return $this->responseBuilder($rows);
     }
 
     public function show($uuid): JsonResponse

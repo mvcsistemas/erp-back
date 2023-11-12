@@ -41,3 +41,16 @@ function setTimeHoursMinutes($time)
 {
     return date('H:i', strtotime($time));
 }
+
+function transformUuidToId(array $request, array $data)
+{
+    foreach ($data as $item) {
+        $campo_pesquisar = $item['campo_pesquisar'];
+
+        $request[$item['chave_atribuir']] = \DB::table($item['tabela'])
+                                               ->where('uuid', $item['uuid'])
+                                               ->first()->$campo_pesquisar;
+    }
+
+    return $request;
+}

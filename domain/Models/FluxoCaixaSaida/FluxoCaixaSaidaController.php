@@ -20,7 +20,7 @@ class FluxoCaixaSaidaController extends MVCController {
     {
         $rows = $this->service->index();
 
-        return $this->responseBuilderWithoutPagination($rows);
+        return $this->responseBuilder($rows);
     }
 
     public function show($uuid): JsonResponse
@@ -32,14 +32,16 @@ class FluxoCaixaSaidaController extends MVCController {
 
     public function store(FluxoCaixaSaidaRequest $request): JsonResponse
     {
-        $row = $this->service->create($request->validated());
+        $data = $this->transformData($request->validated());
+        $row  = $this->service->create($data);
 
         return $this->responseBuilderRow($row, true, 201);
     }
 
     public function update($uuid, FluxoCaixaSaidaRequest $request): JsonResponse
     {
-        $this->service->updateByUuid($uuid, $request->validated());
+        $data = $this->transformData($request->validated());
+        $this->service->updateByUuid($uuid, $data);
 
         return $this->responseBuilderRow([], false, 204);
     }
@@ -49,5 +51,14 @@ class FluxoCaixaSaidaController extends MVCController {
         $this->service->deleteByUuid($uuid);
 
         return $this->responseBuilderRow([], false, 204);
+    }
+
+    public function transformData(array $request)
+    {
+        return transformUuidToId($request, [
+            ['tabela' => 'fluxo_caixa', 'chave_atribuir' => 'fk_id_fluxo_caixa', 'campo_pesquisar' => 'id_fluxo_caixa', 'uuid' => $request['fk_uuid_fluxo_caixa']],
+            ['tabela' => 'cad_tipo_saida', 'chave_atribuir' => 'fk_id_tipo_saida', 'campo_pesquisar' => 'id_tipo_saida', 'uuid' => $request['fk_uuid_tipo_saida']],
+            ['tabela' => 'cad_grupo_financeiro', 'chave_atribuir' => 'fk_id_grupo_financeiro', 'campo_pesquisar' => 'id_grupo_financeiro', 'uuid' => $request['fk_uuid_grupo_financeiro']],
+        ]);
     }
 }
