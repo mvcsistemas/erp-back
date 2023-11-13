@@ -3,6 +3,7 @@
 namespace MVC\Models\FluxoCaixa;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use MVC\Base\MVCController;
 
 class FluxoCaixaController extends MVCController {
@@ -47,6 +48,12 @@ class FluxoCaixaController extends MVCController {
     public function destroy($uuid): JsonResponse
     {
         $this->service->deleteByUuid($uuid);
+
+        return $this->responseBuilderRow([], false, 204);
+    }
+
+    public  function closeFluxoCaixa(Request $request){
+        $this->service->updateByUuid($request->uuid, ['fechamento_fluxo_caixa' => '0']);
 
         return $this->responseBuilderRow([], false, 204);
     }

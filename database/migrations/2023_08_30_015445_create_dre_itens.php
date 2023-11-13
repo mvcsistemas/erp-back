@@ -17,8 +17,7 @@ return new class extends Migration
             $table->decimal('aliquota', 13, 2);
             $table->decimal('valor_dre_item', 13, 2);
             $table->string('dsc_dre_item', 255);
-            $table->foreignId('fk_id_grupo_dre')->references('id_grupo_dre')->on('cad_grupo_dre');
-            $table->foreignId('fk_id_dre')->references('id_dre')->on('dre')->onDelete('cascade');
+            $table->foreignId('fk_id_dre_item_grupo')->references('id_dre_item_grupo')->on('dre_item_grupo');
             $table->timestamps();
         });
     }

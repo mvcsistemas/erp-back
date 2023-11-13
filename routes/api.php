@@ -103,6 +103,7 @@ Route::group([
         'as'        => 'fluxo-caixa.',
         'namespace' => 'FluxoCaixa'
     ], function () {
+        Route::put('fechamento', 'FluxoCaixaController@closeFluxoCaixa')->name('fechamento');
         Route::apiResource('', 'FluxoCaixaController')->parameters(['' => 'uuid']);
     });
 
@@ -120,5 +121,21 @@ Route::group([
         'namespace' => 'FluxoCaixaSaida'
     ], function () {
         Route::apiResource('', 'FluxoCaixaSaidaController')->parameters(['' => 'uuid']);
+    });
+
+    Route::group([
+        'prefix'    => 'dre',
+        'as'        => 'dre.',
+        'namespace' => 'Dre'
+    ], function () {
+        Route::apiResource('', 'DreController')->parameters(['' => 'uuid']);
+    });
+
+    Route::group([
+        'prefix'    => 'dre-itens',
+        'as'        => 'dre-itens.',
+        'namespace' => 'DreItens'
+    ], function () {
+        Route::apiResource('', 'DreItensController')->parameters(['' => 'uuid']);
     });
 });

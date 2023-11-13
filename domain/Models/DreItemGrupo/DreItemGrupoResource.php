@@ -11,8 +11,8 @@ class DreItemGrupoResource extends JsonResource {
         $retorno = [
             'uuid'                 => $this->uuid,
             'valor_dre_item_grupo' => $this->valor_dre_item_grupo,
-            'fk_id_grupo_dre'      => $this->fk_id_grupo_dre,
-            'fk_id_dre'            => $this->fk_id_dre
+            'fk_uuid_grupo_dre'    => $this->fk_uuid_grupo_dre,
+            'fk_uuid_dre'          => $this->fk_uuid_dre
         ];
 
         return $retorno;

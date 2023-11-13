@@ -9,12 +9,11 @@ class DreItensResource extends JsonResource {
     public function toArray($request)
     {
         $retorno = [
-            'uuid'            => $this->uuid,
-            'aliquota'        => $this->aliquota,
-            'valor_dre_item'  => $this->valor_dre_item,
-            'dsc_dre_item'    => $this->dsc_dre_item,
-            'fk_id_grupo_dre' => $this->fk_id_grupo_dre,
-            'fk_id_dre'       => $this->fk_id_dre
+            'uuid'              => $this->uuid,
+            'aliquota'          => $this->aliquota,
+            'valor_dre_item'    => $this->valor_dre_item,
+            'dsc_dre_item'      => $this->dsc_dre_item,
+            'fk_uuid_grupo_dre' => $this->fk_uuid_grupo_dre
         ];
 
         return $retorno;
