@@ -52,9 +52,17 @@ class FluxoCaixaController extends MVCController {
         return $this->responseBuilderRow([], false, 204);
     }
 
-    public  function closeFluxoCaixa(Request $request){
+    public function closeFluxoCaixa(Request $request): JsonResponse
+    {
         $this->service->updateByUuid($request->uuid, ['fechamento_fluxo_caixa' => '0']);
 
         return $this->responseBuilderRow([], false, 204);
+    }
+
+    public function checkOpenFluxoCaixa(): JsonResponse
+    {
+        $data = $this->service->checkOpenFluxoCaixa();
+
+        return $this->responseBuilderRow($data, false);
     }
 }

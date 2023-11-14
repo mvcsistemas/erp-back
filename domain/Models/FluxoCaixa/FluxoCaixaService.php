@@ -12,4 +12,9 @@ class FluxoCaixaService extends MVCService {
     {
         $this->model = $model;
     }
+
+    public function checkOpenFluxoCaixa()
+    {
+        return $this->model->where('fechamento_fluxo_caixa', 1)->count();
+    }
 }

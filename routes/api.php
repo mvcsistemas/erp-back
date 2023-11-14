@@ -103,6 +103,7 @@ Route::group([
         'as'        => 'fluxo-caixa.',
         'namespace' => 'FluxoCaixa'
     ], function () {
+        Route::get('aberto', 'FluxoCaixaController@checkOpenFluxoCaixa')->name('aberto');
         Route::put('fechamento', 'FluxoCaixaController@closeFluxoCaixa')->name('fechamento');
         Route::apiResource('', 'FluxoCaixaController')->parameters(['' => 'uuid']);
     });
