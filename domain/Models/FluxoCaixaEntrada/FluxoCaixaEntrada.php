@@ -3,6 +3,7 @@
 namespace MVC\Models\FluxoCaixaEntrada;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use MVC\Base\MVCModel;
 use YourAppRocks\EloquentUuid\Traits\HasUuid;
 
@@ -14,6 +15,21 @@ class FluxoCaixaEntrada extends MVCModel {
     protected $primaryKey = 'id_fluxo_caixa_entrada';
     protected $guarded    = ['id_fluxo_caixa_entrada'];
     public    $timestamps = true;
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::created(function ($model) {
+            $query = DB::table('fluxo_caixa')
+                       ->selectRaw('SUM(valor_fluxo_caixa_entrada) as valor_fluxo_caixa_entrada, SUM(valor_fluxo_caixa_saida) as valor_fluxo_caixa_saida')
+                       ->join('fluxo_caixa_entrada as entrada', 'entrada.fk_id_fluxo_caixa', 'fluxo_caixa.id_fluxo_caixa')
+                       ->join('fluxo_caixa_saida as saida', 'saida.fk_id_fluxo_caixa', 'fluxo_caixa.id_fluxo_caixa')
+                       ->where('id_fluxo_caixa', 12)
+                       ->where('competencia_fluxo_caixa', '02/2023')
+                       ->get();
+        });
+    }
 
     public function index(): Builder
     {
