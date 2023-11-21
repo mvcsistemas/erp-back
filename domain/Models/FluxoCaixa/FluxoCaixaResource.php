@@ -14,6 +14,7 @@ class FluxoCaixaResource extends JsonResource {
             'valor_liquido_fluxo_caixa'  => $this->valor_liquido_fluxo_caixa,
             'fechamento_fluxo_caixa'     => $this->fechamento_fluxo_caixa,
             'saldo_anterior_fluxo_caixa' => $this->saldo_anterior_fluxo_caixa,
+            'saldo_mensal_fluxo_caixa'   => $this->saldo_mensal_fluxo_caixa,
             'saldo_dia_fluxo_caixa'      => $this->saldo_dia_fluxo_caixa,
         ];
 

@@ -3,6 +3,7 @@
 namespace MVC\Models\FluxoCaixa;
 
 use MVC\Base\MVCService;
+use MVC\Services\BalanceDayFluxoCaixa;
 
 class FluxoCaixaService extends MVCService {
 
@@ -13,8 +14,29 @@ class FluxoCaixaService extends MVCService {
         $this->model = $model;
     }
 
-    public function checkOpenFluxoCaixa()
+    public function checkOpenFluxoCaixa(): int
     {
         return $this->model->where('fechamento_fluxo_caixa', 1)->count();
+    }
+
+    public function balanceDay(string $uuid): string
+    {
+        $request = transformUuidToId([], [
+            ['tabela' => 'fluxo_caixa', 'chave_atribuir' => 'fk_id_fluxo_caixa', 'campo_pesquisar' => 'id_fluxo_caixa', 'uuid' => $uuid]
+        ]);
+
+        $saldo = app()->make(BalanceDayFluxoCaixa::class);
+
+        return $saldo->getSaldoDia($request['fk_id_fluxo_caixa']);
+    }
+
+    public function getSaldoAnteriorFluxoCaixa(): FluxoCaixa
+    {
+        $mes_anterior = date('m/Y', strtotime("-1 month"));
+
+        return $this->model
+                    ->select('valor_liquido_fluxo_caixa')
+                    ->where('competencia_fluxo_caixa', $mes_anterior)
+                    ->first();
     }
 }

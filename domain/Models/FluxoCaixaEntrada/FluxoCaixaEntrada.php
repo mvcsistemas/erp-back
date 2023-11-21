@@ -3,8 +3,8 @@
 namespace MVC\Models\FluxoCaixaEntrada;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use MVC\Base\MVCModel;
+use MVC\Services\UpdateValuesFluxoCaixa;
 use YourAppRocks\EloquentUuid\Traits\HasUuid;
 
 class FluxoCaixaEntrada extends MVCModel {
@@ -21,13 +21,15 @@ class FluxoCaixaEntrada extends MVCModel {
         parent::boot();
 
         self::created(function ($model) {
-            $query = DB::table('fluxo_caixa')
-                       ->selectRaw('SUM(valor_fluxo_caixa_entrada) as valor_fluxo_caixa_entrada, SUM(valor_fluxo_caixa_saida) as valor_fluxo_caixa_saida')
-                       ->join('fluxo_caixa_entrada as entrada', 'entrada.fk_id_fluxo_caixa', 'fluxo_caixa.id_fluxo_caixa')
-                       ->join('fluxo_caixa_saida as saida', 'saida.fk_id_fluxo_caixa', 'fluxo_caixa.id_fluxo_caixa')
-                       ->where('id_fluxo_caixa', 12)
-                       ->where('competencia_fluxo_caixa', '02/2023')
-                       ->get();
+            $model->updateSaldoFluxoCaixa($model->fk_id_fluxo_caixa);
+        });
+
+        self::updated(function ($model) {
+            $model->updateSaldoFluxoCaixa($model->fk_id_fluxo_caixa);
+        });
+
+        self::deleted(function ($model) {
+            $model->updateSaldoFluxoCaixa($model->fk_id_fluxo_caixa);
         });
     }
 
@@ -78,5 +80,11 @@ class FluxoCaixaEntrada extends MVCModel {
             ->when(! $tipo_ordenacao || ! $campo_ordenacao, function ($query) {
                 $query->orderByDesc('fluxo_caixa_entrada.data_fluxo_caixa_entrada');
             });
+    }
+
+    public function updateSaldoFluxoCaixa(int $fk_id_fluxo_caixa)
+    {
+        $service = app()->make(UpdateValuesFluxoCaixa::class);
+        $service->updateSaldoFluxoCaixa($fk_id_fluxo_caixa);
     }
 }

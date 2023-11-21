@@ -4,6 +4,7 @@ namespace MVC\Models\FluxoCaixaSaida;
 
 use Illuminate\Database\Eloquent\Builder;
 use MVC\Base\MVCModel;
+use MVC\Services\UpdateValuesFluxoCaixa;
 use YourAppRocks\EloquentUuid\Traits\HasUuid;
 
 class FluxoCaixaSaida extends MVCModel {
@@ -14,6 +15,23 @@ class FluxoCaixaSaida extends MVCModel {
     protected $primaryKey = 'id_fluxo_caixa_saida';
     protected $guarded    = ['id_fluxo_caixa_saida'];
     public    $timestamps = true;
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::created(function ($model) {
+            $model->updateSaldoFluxoCaixa($model->fk_id_fluxo_caixa);
+        });
+
+        self::updated(function ($model) {
+            $model->updateSaldoFluxoCaixa($model->fk_id_fluxo_caixa);
+        });
+
+        self::deleted(function ($model) {
+            $model->updateSaldoFluxoCaixa($model->fk_id_fluxo_caixa);
+        });
+    }
 
     public function index(): Builder
     {
@@ -62,5 +80,11 @@ class FluxoCaixaSaida extends MVCModel {
             ->when(! $tipo_ordenacao || ! $campo_ordenacao, function ($query) {
                 $query->orderByDesc('fluxo_caixa_saida.data_fluxo_caixa_saida');
             });
+    }
+
+    public function updateSaldoFluxoCaixa(int $fk_id_fluxo_caixa)
+    {
+        $service = app()->make(UpdateValuesFluxoCaixa::class);
+        $service->updateSaldoFluxoCaixa($fk_id_fluxo_caixa);
     }
 }

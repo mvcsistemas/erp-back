@@ -26,7 +26,8 @@ class FluxoCaixaController extends MVCController {
 
     public function show($uuid): JsonResponse
     {
-        $row = $this->service->showByUuid($uuid);
+        $row                        = $this->service->showByUuid($uuid);
+        $row->saldo_dia_fluxo_caixa = $this->service->balanceDay($uuid);
 
         return $this->responseBuilderRow($row);
     }
@@ -62,6 +63,13 @@ class FluxoCaixaController extends MVCController {
     public function checkOpenFluxoCaixa(): JsonResponse
     {
         $data = $this->service->checkOpenFluxoCaixa();
+
+        return $this->responseBuilderRow($data, false);
+    }
+
+    public function getSaldoAnteriorFluxoCaixa(): JsonResponse
+    {
+        $data = $this->service->getSaldoAnteriorFluxoCaixa();
 
         return $this->responseBuilderRow($data, false);
     }
