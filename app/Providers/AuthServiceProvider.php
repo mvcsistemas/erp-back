@@ -4,6 +4,11 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use MVC\Models\FluxoCaixa\FluxoCaixa;
+use MVC\Models\FluxoCaixaEntrada\FluxoCaixaEntrada;
+use MVC\Models\FluxoCaixaSaida\FluxoCaixaSaida;
+use MVC\Policys\FluxoCaixaItensPolicy;
+use MVC\Policys\FluxoCaixaPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +18,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // SecAvisosPortalAluno::class => SecAvisosPortalAlunoPolicy::class,
+        FluxoCaixa::class        => FluxoCaixaPolicy::class,
+        FluxoCaixaEntrada::class => FluxoCaixaItensPolicy::class,
+        FluxoCaixaSaida::class   => FluxoCaixaItensPolicy::class,
     ];
 
     /**
@@ -21,6 +28,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //$this->registerPolicies();
+        $this->registerPolicies();
     }
 }

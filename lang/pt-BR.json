@@ -151,5 +151,7 @@
     "login_senha_invalidos": "Login e/ou senha inválido(s)",
     "planta_invalida": "Planta inválida",
     "usuario_invalido": "Usuário inválido",
-    "desconectado_sucesso": "Desconectado com sucesso"
+    "desconectado_sucesso": "Desconectado com sucesso",
+    "exite_fluxo_caixa_aberto": "Já existe um Fluxo de Caixa aberto! Por favor, verifique.",
+    "fluxo_caixa_encerrado": "Não foi possível completar a solicitação, este Fluxo de Caixa está encerrado!"
 }
