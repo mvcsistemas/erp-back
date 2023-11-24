@@ -32,7 +32,7 @@ class FluxoCaixaSaidaController extends MVCController {
 
     public function store(FluxoCaixaSaidaRequest $request): JsonResponse
     {
-        $this->authorize('checkIfFluxoCaixaIsOpen', $request->all());
+        $this->authorize('checkIfFluxoCaixaIsOpen', [FluxoCaixaSaida::class, $request->all()]);
 
         $data = $this->transformData($request->validated());
         $row  = $this->service->create($data);
@@ -42,7 +42,7 @@ class FluxoCaixaSaidaController extends MVCController {
 
     public function update($uuid, FluxoCaixaSaidaRequest $request): JsonResponse
     {
-        $this->authorize('checkIfFluxoCaixaIsOpen', $request->all());
+        $this->authorize('checkIfFluxoCaixaIsOpen', [FluxoCaixaSaida::class, $request->all()]);
 
         $data = $this->transformData($request->validated());
         $this->service->updateByUuid($uuid, $data);
@@ -52,7 +52,9 @@ class FluxoCaixaSaidaController extends MVCController {
 
     public function destroy($uuid): JsonResponse
     {
-        $this->authorize('checkIfFluxoCaixaIsOpen', request()->all());
+        $fluxo_caixa = $this->service->getFluxoCaixa($uuid);
+
+        $this->authorize('checkIfFluxoCaixaIsOpen', [FluxoCaixaSaida::class, ['fk_uuid_fluxo_caixa' => $fluxo_caixa->fk_uuid_fluxo_caixa]]);
 
         $this->service->deleteByUuid($uuid);
 

@@ -30,7 +30,7 @@ class FluxoCaixaService extends MVCService {
         return $saldo->getSaldoDia($request['fk_id_fluxo_caixa']);
     }
 
-    public function getSaldoAnteriorFluxoCaixa(): FluxoCaixa
+    public function getSaldoAnteriorFluxoCaixa(): mixed
     {
         $mes_anterior = date('m/Y', strtotime("-1 month"));
 

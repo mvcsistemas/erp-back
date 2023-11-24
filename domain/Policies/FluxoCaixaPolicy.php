@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Policys;
+namespace MVC\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;

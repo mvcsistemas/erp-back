@@ -7,8 +7,8 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use MVC\Models\FluxoCaixa\FluxoCaixa;
 use MVC\Models\FluxoCaixaEntrada\FluxoCaixaEntrada;
 use MVC\Models\FluxoCaixaSaida\FluxoCaixaSaida;
-use MVC\Policys\FluxoCaixaItensPolicy;
-use MVC\Policys\FluxoCaixaPolicy;
+use MVC\Policies\FluxoCaixaItensPolicy;
+use MVC\Policies\FluxoCaixaPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
