@@ -52,7 +52,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group([
     'as'         => 'portal.',
-    'middleware' => 'auth:sanctum'
+    //'middleware' => 'auth:sanctum'
 ], function () {
 
     Route::group([
@@ -95,6 +95,7 @@ Route::group([
         'as'        => 'grupo-dre.',
         'namespace' => 'CadGrupoDre'
     ], function () {
+        Route::get('lookup', 'CadGrupoDreController@lookup')->name('lookup');
         Route::apiResource('', 'CadGrupoDreController')->parameters(['' => 'uuid']);
     });
 
@@ -130,6 +131,7 @@ Route::group([
         'as'        => 'dre.',
         'namespace' => 'Dre'
     ], function () {
+        Route::get('aberto', 'DreController@checkOpenDre')->name('aberto');
         Route::apiResource('', 'DreController')->parameters(['' => 'uuid']);
     });
 

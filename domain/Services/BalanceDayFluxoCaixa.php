@@ -18,16 +18,16 @@ class BalanceDayFluxoCaixa {
     public function getSaldoEntrada(int $fk_id_fluxo_caixa): FluxoCaixaEntrada
     {
         return FluxoCaixaEntrada::selectRaw('SUM(valor_fluxo_caixa_entrada) as saldo_entrada')
-        ->where('fk_id_fluxo_caixa', $fk_id_fluxo_caixa)
-        ->where('data_fluxo_caixa_entrada', date('Y-m-d'))
-        ->first();
+                                ->where('fk_id_fluxo_caixa', $fk_id_fluxo_caixa)
+                                ->where('data_fluxo_caixa_entrada', date('Y-m-d'))
+                                ->first();
     }
 
     public function getSaldoSaida(int $fk_id_fluxo_caixa): FluxoCaixaSaida
     {
         return FluxoCaixaSaida::selectRaw('SUM(valor_fluxo_caixa_saida) as saldo_saida')
-        ->where('fk_id_fluxo_caixa', $fk_id_fluxo_caixa)
-        ->where('data_fluxo_caixa_saida', date('Y-m-d'))
-        ->first();
+                              ->where('fk_id_fluxo_caixa', $fk_id_fluxo_caixa)
+                              ->where('data_fluxo_caixa_saida', date('Y-m-d'))
+                              ->first();
     }
 }

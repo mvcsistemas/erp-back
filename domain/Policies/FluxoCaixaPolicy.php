@@ -16,18 +16,18 @@ class FluxoCaixaPolicy {
     {
         $existe_fluxo_caixa_aberto = FluxoCaixa::where('fechamento_fluxo_caixa', 1)->count();
 
-        if($existe_fluxo_caixa_aberto > 0){
+        if ($existe_fluxo_caixa_aberto > 0) {
             return Response::deny(Lang::get('exite_fluxo_caixa_aberto'));
         }
 
         return Response::allow();
     }
 
-    public function checkIfFluxoCaixaIsOpen (User $user, array $data)
+    public function checkIfFluxoCaixaIsOpen(User $user, array $data)
     {
         $fluxo_caixa = FluxoCaixa::findByUuid($data['uuid']);
 
-        if($fluxo_caixa->fechamento_fluxo_caixa == 0) {
+        if ($fluxo_caixa->fechamento_fluxo_caixa == 0) {
             return Response::deny(Lang::get('fluxo_caixa_encerrado'));
         }
 

@@ -12,8 +12,10 @@ class DreItensRequest extends MVCRequest {
             'uuid'              => '',
             'aliquota'          => 'required',
             'valor_dre_item'    => 'required',
-            'dsc_dre_item'      => 'required',
-            'fk_uuid_grupo_dre' => 'required'
+            'tipo_item_uuid'    => 'required',
+            'tipo_item_model'   => 'required',
+            'fk_uuid_grupo_dre' => 'required',
+            'fk_uuid_dre'       => 'required',
         ];
     }
 
@@ -22,8 +24,10 @@ class DreItensRequest extends MVCRequest {
         return [
             'aliquota.required'          => 'O campo Alíquota é obrigatório.',
             'valor_dre_item.required'    => 'O campo Valor é obrigatório.',
-            'dsc_dre_item.required'      => 'O campo Descrição é obrigatório.',
-            'fk_uuid_grupo_dre.required' => 'O campo Grupo é obrigatório.'
+            'tipo_item_uuid.required'    => 'O campo Tipo Item é obrigatório.',
+            'tipo_item_model.required'   => 'O campo Model é obrigatório.',
+            'fk_uuid_grupo_dre.required' => 'O campo Grupo é obrigatório.',
+            'fk_uuid_dre.required'       => 'O campo DRE é obrigatório.'
         ];
     }
 }

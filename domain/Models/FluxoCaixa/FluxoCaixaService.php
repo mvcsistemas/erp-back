@@ -32,11 +32,9 @@ class FluxoCaixaService extends MVCService {
 
     public function getSaldoAnteriorFluxoCaixa(): mixed
     {
-        $mes_anterior = date('m/Y', strtotime("-1 month"));
-
-        return $this->model
-                    ->select('valor_liquido_fluxo_caixa')
-                    ->where('competencia_fluxo_caixa', $mes_anterior)
-                    ->first();
+        return $this->model->select('valor_liquido_fluxo_caixa')
+                           ->where('fechamento_fluxo_caixa', 0)
+                           ->orderByDesc('competencia_fluxo_caixa')
+                           ->first();
     }
 }

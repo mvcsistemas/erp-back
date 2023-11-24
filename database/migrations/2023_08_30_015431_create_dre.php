@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dre', function (Blueprint $table) {
             $table->id('id_dre')->index();
             $table->uuid()->index();
-            $table->date('data_dre')->index();
+            $table->string('competencia_dre', 10)->unique()->index();
             $table->boolean('fechamento_dre');
             $table->timestamps();
         });

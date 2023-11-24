@@ -3,6 +3,7 @@
 namespace MVC\Models\CadGrupoDre;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use MVC\Base\MVCController;
 
 class CadGrupoDreController extends MVCController {
@@ -49,5 +50,12 @@ class CadGrupoDreController extends MVCController {
         $this->service->deleteByUuid($uuid);
 
         return $this->responseBuilderRow([], false, 204);
+    }
+
+    public function lookup(Request $request): JsonResponse
+    {
+        $rows = $this->service->lookup($request->all());
+
+        return $this->responseBuilderWithoutPagination($rows, false);
     }
 }

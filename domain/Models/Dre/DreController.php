@@ -32,6 +32,8 @@ class DreController extends MVCController {
 
     public function store(DreRequest $request): JsonResponse
     {
+        $this->authorize('create', Dre::class);
+
         $row = $this->service->create($request->validated());
 
         return $this->responseBuilderRow($row, true, 201);
@@ -39,6 +41,8 @@ class DreController extends MVCController {
 
     public function update($uuid, DreRequest $request): JsonResponse
     {
+        $this->authorize('checkIfDreIsOpen', [Dre::class, $request->all()]);
+
         $this->service->updateByUuid($uuid, $request->validated());
 
         return $this->responseBuilderRow([], false, 204);
@@ -46,8 +50,17 @@ class DreController extends MVCController {
 
     public function destroy($uuid): JsonResponse
     {
+        $this->authorize('checkIfDreIsOpen', [Dre::class, ['uuid' => $uuid]]);
+
         $this->service->deleteByUuid($uuid);
 
         return $this->responseBuilderRow([], false, 204);
+    }
+
+    public function checkOpenDre(): JsonResponse
+    {
+        $data = $this->service->checkOpenDre();
+
+        return $this->responseBuilderRow($data, false);
     }
 }

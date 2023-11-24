@@ -12,7 +12,7 @@ class CadGrupoDreFactory extends Factory
     public function definition(): array
     {
         return [
-            'dsc_grupo_dre' => fake()->name()
+            'dsc_grupo_dre' => ''
         ];
     }
 }

@@ -12,11 +12,11 @@ class FluxoCaixaItensPolicy {
 
     use HandlesAuthorization;
 
-    public function checkIfFluxoCaixaIsOpen (User $user, array $data)
+    public function checkIfFluxoCaixaIsOpen(User $user, array $data)
     {
         $fluxo_caixa = FluxoCaixa::findByUuid($data['fk_uuid_fluxo_caixa']);
 
-        if($fluxo_caixa->fechamento_fluxo_caixa == 0) {
+        if ($fluxo_caixa->fechamento_fluxo_caixa == 0) {
             return Response::deny(Lang::get('fluxo_caixa_encerrado'));
         }
 

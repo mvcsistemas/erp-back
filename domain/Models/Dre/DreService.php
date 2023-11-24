@@ -12,4 +12,9 @@ class DreService extends MVCService {
     {
         $this->model = $model;
     }
+
+    public function checkOpenDre(): int
+    {
+        return $this->model->where('fechamento_dre', 1)->count();
+    }
 }

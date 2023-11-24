@@ -9,9 +9,9 @@ class DreResource extends JsonResource {
     public function toArray($request)
     {
         $retorno = [
-            'uuid'           => $this->uuid,
-            'data_dre'       => $this->data_dre,
-            'fechamento_dre' => $this->fechamento_dre
+            'uuid'            => $this->uuid,
+            'competencia_dre' => $this->competencia_dre,
+            'fechamento_dre'  => $this->fechamento_dre
         ];
 
         return $retorno;

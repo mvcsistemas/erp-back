@@ -153,5 +153,7 @@
     "usuario_invalido": "Usuário inválido",
     "desconectado_sucesso": "Desconectado com sucesso",
     "exite_fluxo_caixa_aberto": "Já existe um Fluxo de Caixa aberto! Por favor, verifique.",
-    "fluxo_caixa_encerrado": "Não foi possível completar a solicitação, este Fluxo de Caixa está encerrado!"
+    "fluxo_caixa_encerrado": "Não foi possível completar a solicitação, este Fluxo de Caixa está encerrado!",
+    "exite_dre_aberto": "Já existe um DRE aberto! Por favor, verifique.",
+    "dre_encerrado": "Não foi possível completar a solicitação, este DRE está encerrado!"
 }

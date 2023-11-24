@@ -29,7 +29,7 @@ class Dre extends MVCModel {
                 $query->orderBy($campo_ordenacao, $tipo_ordenacao);
             })
             ->when(! $tipo_ordenacao || ! $campo_ordenacao, function ($query) {
-                $query->orderBy('dre.data_dre');
+                $query->orderBy('dre.competencia_dre');
             });
     }
 }
