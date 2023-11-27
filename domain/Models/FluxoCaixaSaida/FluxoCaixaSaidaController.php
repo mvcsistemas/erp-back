@@ -3,6 +3,7 @@
 namespace MVC\Models\FluxoCaixaSaida;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use MVC\Base\MVCController;
 
 class FluxoCaixaSaidaController extends MVCController {
@@ -59,6 +60,13 @@ class FluxoCaixaSaidaController extends MVCController {
         $this->service->deleteByUuid($uuid);
 
         return $this->responseBuilderRow([], false, 204);
+    }
+
+    public function getValorTipoSaida(Request $request): JsonResponse
+    {
+        $data = $this->service->getValorTipoSaida($request->all());
+
+        return $this->responseBuilderRow($data, false);
     }
 
     public function transformData(array $request)

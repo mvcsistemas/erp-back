@@ -3,6 +3,7 @@
 namespace MVC\Models\Dre;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use MVC\Base\MVCController;
 
 class DreController extends MVCController {
@@ -62,5 +63,12 @@ class DreController extends MVCController {
         $data = $this->service->checkOpenDre();
 
         return $this->responseBuilderRow($data, false);
+    }
+
+    public function closeDre(Request $request): JsonResponse
+    {
+        $this->service->updateByUuid($request->uuid, ['fechamento_dre' => '0']);
+
+        return $this->responseBuilderRow([], false, 204);
     }
 }

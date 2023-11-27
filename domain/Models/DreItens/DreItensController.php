@@ -41,7 +41,9 @@ class DreItensController extends MVCController {
 
     public function update($uuid, DreItensRequest $request): JsonResponse
     {
-        $this->service->updateByUuid($uuid, $request->validated());
+        $data = $this->transformData($request->validated());
+
+        $this->service->updateByUuid($uuid, $data);
 
         return $this->responseBuilderRow([], false, 204);
     }

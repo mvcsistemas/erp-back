@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('dre_itens', function (Blueprint $table) {
             $table->id('id_dre_item')->index();
             $table->uuid()->index();
-            $table->decimal('aliquota', 13, 2);
+            $table->decimal('aliquota', 13, 1);
             $table->decimal('valor_dre_item', 13, 2);
             $table->integer('tipo_item_id');
             $table->string('tipo_item_model', 255);

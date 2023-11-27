@@ -52,7 +52,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group([
     'as'         => 'portal.',
-    //'middleware' => 'auth:sanctum'
+    'middleware' => 'auth:sanctum'
 ], function () {
 
     Route::group([
@@ -115,6 +115,7 @@ Route::group([
         'as'        => 'fluxo-caixa-entrada.',
         'namespace' => 'FluxoCaixaEntrada'
     ], function () {
+        Route::get('valor-item', 'FluxoCaixaEntradaController@getValorTipoEntrada')->name('valor-item');
         Route::apiResource('', 'FluxoCaixaEntradaController')->parameters(['' => 'uuid']);
     });
 
@@ -123,6 +124,7 @@ Route::group([
         'as'        => 'fluxo-caixa-saida.',
         'namespace' => 'FluxoCaixaSaida'
     ], function () {
+        Route::get('valor-item', 'FluxoCaixaSaidaController@getValorTipoSaida')->name('valor-item');
         Route::apiResource('', 'FluxoCaixaSaidaController')->parameters(['' => 'uuid']);
     });
 
@@ -132,6 +134,7 @@ Route::group([
         'namespace' => 'Dre'
     ], function () {
         Route::get('aberto', 'DreController@checkOpenDre')->name('aberto');
+        Route::put('fechamento', 'DreController@closeDre')->name('fechamento');
         Route::apiResource('', 'DreController')->parameters(['' => 'uuid']);
     });
 
