@@ -71,4 +71,11 @@ class DreController extends MVCController {
 
         return $this->responseBuilderRow([], false, 204);
     }
+
+    public function summaryDre(string $uuid): JsonResponse
+    {
+        $rows = $this->service->summaryDre($uuid);
+
+        return $this->responseBuilder($rows, false);
+    }
 }

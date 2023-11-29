@@ -134,6 +134,7 @@ Route::group([
         'namespace' => 'Dre'
     ], function () {
         Route::get('aberto', 'DreController@checkOpenDre')->name('aberto');
+        Route::get('resumo/{uuid}', 'DreController@summaryDre')->name('resumo');
         Route::put('fechamento', 'DreController@closeDre')->name('fechamento');
         Route::apiResource('', 'DreController')->parameters(['' => 'uuid']);
     });

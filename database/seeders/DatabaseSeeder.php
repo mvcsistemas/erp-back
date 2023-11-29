@@ -22,19 +22,14 @@ class DatabaseSeeder extends Seeder {
         CadTipoEntrada::factory(10)->create();
         CadTipoSaida::factory(10)->create();
         CadGrupoFinanceiro::factory(10)->create();
-        CadGrupoDre::factory(11)
+        CadGrupoDre::factory(6)
                    ->state(new Sequence(
                        ['dsc_grupo_dre' => 'Receita Bruta'],
                        ['dsc_grupo_dre' => 'Impostos e Deduções'],
-                       ['dsc_grupo_dre' => 'Receita Líquida'],
                        ['dsc_grupo_dre' => 'Custos'],
-                       ['dsc_grupo_dre' => 'Lucro Bruto'],
                        ['dsc_grupo_dre' => 'Despesas Operacionais'],
-                       ['dsc_grupo_dre' => 'EBITDA'],
                        ['dsc_grupo_dre' => 'Depreciação e Amortização'],
-                       ['dsc_grupo_dre' => 'EBIT'],
-                       ['dsc_grupo_dre' => 'Juros e Impostos'],
-                       ['dsc_grupo_dre' => 'Lucro Líquido']
+                       ['dsc_grupo_dre' => 'Juros e Impostos']
                 ))
                    ->create();
     }
