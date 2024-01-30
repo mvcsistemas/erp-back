@@ -3,6 +3,7 @@
 namespace MVC\Models\DreItens;
 
 use MVC\Base\MVCRequest;
+use MVC\Rules\DreItensRule;
 
 class DreItensRequest extends MVCRequest {
 
@@ -12,7 +13,7 @@ class DreItensRequest extends MVCRequest {
             'uuid'              => '',
             'aliquota'          => 'required',
             'valor_dre_item'    => 'required',
-            'tipo_item_uuid'    => 'required',
+            'tipo_item_uuid'    => ['required', new DreItensRule()],
             'tipo_item_model'   => 'required',
             'fk_uuid_grupo_dre' => 'required',
             'fk_uuid_dre'       => 'required',
