@@ -3,7 +3,10 @@
 namespace MVC\Models\FluxoCaixaSaida;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MVC\Base\MVCModel;
+use MVC\Models\FluxoCaixa\FluxoCaixa;
+use MVC\Services\UpdateValuesDre;
 use MVC\Services\UpdateValuesFluxoCaixa;
 use YourAppRocks\EloquentUuid\Traits\HasUuid;
 
@@ -22,14 +25,17 @@ class FluxoCaixaSaida extends MVCModel {
 
         self::created(function ($model) {
             $model->updateSaldoFluxoCaixa($model->fk_id_fluxo_caixa);
+            $model->updateSaldoDreFluxoCaixaSaida($model);
         });
 
         self::updated(function ($model) {
             $model->updateSaldoFluxoCaixa($model->fk_id_fluxo_caixa);
+            $model->updateSaldoDreFluxoCaixaSaida($model);
         });
 
         self::deleted(function ($model) {
             $model->updateSaldoFluxoCaixa($model->fk_id_fluxo_caixa);
+            $model->updateSaldoDreFluxoCaixaSaida($model);
         });
     }
 
@@ -82,9 +88,20 @@ class FluxoCaixaSaida extends MVCModel {
             });
     }
 
+    public function fluxoCaixa(): BelongsTo
+    {
+        return $this->belongsTo(FluxoCaixa::class, 'fk_id_fluxo_caixa', 'id_fluxo_caixa');
+    }
+
     public function updateSaldoFluxoCaixa(int $fk_id_fluxo_caixa)
     {
         $service = app()->make(UpdateValuesFluxoCaixa::class);
         $service->updateSaldoFluxoCaixa($fk_id_fluxo_caixa);
+    }
+
+    public function updateSaldoDreFluxoCaixaSaida(FluxoCaixaSaida $model)
+    {
+        $service = app()->make(UpdateValuesDre::class);
+        $service->updateSaldoDreFluxoCaixaSaida($model);
     }
 }
