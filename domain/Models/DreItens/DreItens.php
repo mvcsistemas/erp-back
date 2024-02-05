@@ -47,6 +47,7 @@ class DreItens extends MVCModel {
         $fk_uuid_dre     = (string)($params['fk_uuid_dre'] ?? '');
         $dsc_tipo_item   = (string)($params['dsc_tipo_item'] ?? '');
         $dsc_grupo_dre   = (string)($params['dsc_grupo_dre'] ?? '');
+        $valor_dre_item  = (float)($params['valor_dre_item'] ?? 0);
         $tipo_ordenacao  = (string)($params['tipo_ordenacao'] ?? '');
         $campo_ordenacao = (string)($params['campo_ordenacao'] ?? '');
 
@@ -63,6 +64,9 @@ class DreItens extends MVCModel {
             })
             ->when($dsc_grupo_dre, function ($query) use ($dsc_grupo_dre) {
                 $query->where('dsc_grupo_dre', 'like', "%$dsc_grupo_dre%");
+            })
+            ->when($valor_dre_item, function ($query) use ($valor_dre_item) {
+                $query->where('dre_itens.valor_dre_item', $valor_dre_item);
             })
             ->when($tipo_ordenacao && $campo_ordenacao, function ($query) use ($tipo_ordenacao, $campo_ordenacao) {
                 $query->orderBy($campo_ordenacao, $tipo_ordenacao);

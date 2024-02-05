@@ -56,13 +56,14 @@ class FluxoCaixaSaida extends MVCModel {
 
     public function filter(Builder $query, array $params = []): Builder
     {
-        $uuid                   = (string)($params['uuid'] ?? '');
-        $fk_uuid_fluxo_caixa    = (string)($params['fk_uuid_fluxo_caixa'] ?? '');
-        $data_fluxo_caixa_saida = (string)($params['data_fluxo_caixa_saida'] ?? '');
-        $dsc_tipo_saida         = (string)($params['dsc_tipo_saida'] ?? '');
-        $dsc_grupo_financeiro   = (string)($params['dsc_grupo_financeiro'] ?? '');
-        $tipo_ordenacao         = (string)($params['tipo_ordenacao'] ?? '');
-        $campo_ordenacao        = (string)($params['campo_ordenacao'] ?? '');
+        $uuid                      = (string)($params['uuid'] ?? '');
+        $fk_uuid_fluxo_caixa       = (string)($params['fk_uuid_fluxo_caixa'] ?? '');
+        $data_fluxo_caixa_saida    = (string)($params['data_fluxo_caixa_saida'] ?? '');
+        $valor_fluxo_caixa_saida = (float)($params['valor_fluxo_caixa_saida'] ?? 0);
+        $dsc_tipo_saida            = (string)($params['dsc_tipo_saida'] ?? '');
+        $dsc_grupo_financeiro      = (string)($params['dsc_grupo_financeiro'] ?? '');
+        $tipo_ordenacao            = (string)($params['tipo_ordenacao'] ?? '');
+        $campo_ordenacao           = (string)($params['campo_ordenacao'] ?? '');
 
         return $query
             ->when($uuid, function ($query) use ($uuid) {
@@ -76,6 +77,9 @@ class FluxoCaixaSaida extends MVCModel {
             })
             ->when($dsc_tipo_saida, function ($query) use ($dsc_tipo_saida) {
                 $query->where('cad_tipo_saida.dsc_tipo_saida', 'like', "%$dsc_tipo_saida%");
+            })
+            ->when($valor_fluxo_caixa_saida, function ($query) use ($valor_fluxo_caixa_saida) {
+                $query->where('fluxo_caixa_saida.valor_fluxo_caixa_saida', $valor_fluxo_caixa_saida);
             })
             ->when($dsc_grupo_financeiro, function ($query) use ($dsc_grupo_financeiro) {
                 $query->where('cad_grupo_financeiro.dsc_grupo_financeiro', 'like', "%$dsc_grupo_financeiro%");
