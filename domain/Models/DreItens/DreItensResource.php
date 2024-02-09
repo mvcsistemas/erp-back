@@ -12,7 +12,7 @@ class DreItensResource extends JsonResource {
             'uuid'              => $this->uuid,
             'aliquota'          => $this->aliquota,
             'valor_dre_item'    => $this->valor_dre_item,
-            'valor_original'    => $this->valor_dre_item,
+            'valor_original'    => $this->valor_dre_item / (1 + ($this->aliquota / 100)),
             'dsc_tipo_item'     => $this->dsc_tipo_item,
             'tipo_item_uuid'    => $this->tipo_item_uuid,
             'tipo_item_model'   => $this->tipo_item_model,
