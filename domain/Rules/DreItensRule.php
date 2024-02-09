@@ -26,6 +26,9 @@ class DreItensRule implements Rule {
         $item = DreItens::where('fk_id_dre', $request['fk_id_dre'])
                         ->where('tipo_item_id', $request['tipo_item_id'])
                         ->where('tipo_item_model', $request['tipo_item_model'])
+                        ->when(request()->uuid, function ($query) {
+                            $query->where('dre_itens.uuid', '<>', request()->uuid);
+                        })
                         ->get();
 
         return $item->count() == 0;

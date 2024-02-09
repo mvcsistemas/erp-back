@@ -59,7 +59,7 @@ class User extends MVCModel implements AuthenticatableContract, AuthorizableCont
 
     public function sendPasswordResetNotification($token)
     {
-        $url = config('erp.front_url') . '/reset-password/' . $token . '?email=' . $this->email;
+        $url = config('erp.front_url') . '/resetar-senha/' . $token . '?email=' . $this->email;
 
         $this->notify(new ResetPasswordNotification($url));
     }

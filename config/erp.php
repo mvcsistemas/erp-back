@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'front_url' => 'http://localhost:8080'
+    'front_url' => env('FRONT_URL','http://localhost:8080')
 ];
